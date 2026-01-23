@@ -1,0 +1,47 @@
+# ===== General =====
+*.swp
+*.swo
+*~
+.DS_Store
+
+# ===== C++ / CMake =====
+/build/
+/cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+compile_commands.json
+
+# ===== Core library build artifacts =====
+core/build/
+core/lib/
+core/bin/
+
+# ===== ROS2 / colcon =====
+panda_ws/build/
+panda_ws/install/
+panda_ws/log/
+
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+
+# ===== Gazebo =====
+*.log
+*.world~
+/gazebo/
+~/.gazebo/
+
+# ===== IDEs =====
+.vscode/
+.idea/
+*.user
+*.code-workspace
+
+# ===== Testing / Coverage =====
+*.gcda
+*.gcno
+*.gcov
+coverage/
