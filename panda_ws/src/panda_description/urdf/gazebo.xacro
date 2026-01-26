@@ -21,12 +21,17 @@
     </xacro:unless>
 
     <!-- Joint 1 -->
-    <joint name="panda_joint1">
+     <joint name="panda_joint1">
       <command_interface name="position">
         <param name="min">-2.9671</param>
         <param name="max">2.9671</param>
       </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
 
     <!-- Joint 2 -->
@@ -35,7 +40,12 @@
         <param name="min">-1.8326</param>
         <param name="max">1.8326</param>
       </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
 
     <!-- Joint 3 -->
@@ -44,7 +54,12 @@
         <param name="min">-2.9671</param>
         <param name="max">2.9671</param>
       </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
 
     <!-- Joint 4 -->
@@ -53,7 +68,12 @@
         <param name="min">-3.1416</param>
         <param name="max">0.0</param>
       </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
 
     <!-- Joint 5 -->
@@ -62,7 +82,12 @@
         <param name="min">-2.9671</param>
         <param name="max">2.9671</param>
       </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
 
     <!-- Joint 6 -->
@@ -71,7 +96,12 @@
         <param name="min">-0.0873</param>
         <param name="max">3.8223</param>
       </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
 
     <!-- Joint 7 -->
@@ -80,7 +110,12 @@
         <param name="min">-2.9671</param>
         <param name="max">2.9671</param>
       </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-10.0</param>
+        <param name="max">10.0</param>
+      </command_interface>
       <state_interface name="position"/>
+      <state_interface name="velocity"/>
     </joint>
 
     <!-- Gripper Finger Joint 1 -->
