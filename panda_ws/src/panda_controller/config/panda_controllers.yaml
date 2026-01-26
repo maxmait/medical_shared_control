@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100 # Hz
+    update_rate: 500 # Increase for velocity control
 
     arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -8,6 +8,9 @@ controller_manager:
       type: joint_trajectory_controller/JointTrajectoryController
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
+    # Add the velocity controller
+    arm_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
 
 arm_controller:
   ros__parameters:
@@ -43,3 +46,20 @@ gripper_controller:
 
     open_loop_control: true
     allow_integration_in_goal_trajectories: true
+
+# Add velocity controller configuration
+arm_velocity_controller:
+  ros__parameters:
+    joints:
+      - panda_joint1
+      - panda_joint2
+      - panda_joint3
+      - panda_joint4
+      - panda_joint5
+      - panda_joint6
+      - panda_joint7
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
