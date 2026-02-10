@@ -83,6 +83,7 @@ install(PROGRAMS
   ${PROJECT_NAME}/slider_controller.py
   ${PROJECT_NAME}/velocity_test.py
   ${PROJECT_NAME}/test_controller_input.py
+  ${PROJECT_NAME}/test_controller_vibration.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
