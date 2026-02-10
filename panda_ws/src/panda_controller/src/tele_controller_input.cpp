@@ -1,0 +1,240 @@
+#include <rclcpp/rclcpp.hpp>
+#include <sensor_msgs/msg/joy.hpp>
+#include <geometry_msgs/msg/twist.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <cmath>
+
+class TeleControllerInput : public rclcpp::Node
+{
+public:
+    TeleControllerInput() : Node("tele_controller_input")
+    {
+        // Subscribe to joystick input
+        joy_sub_ = this->create_subscription<sensor_msgs::msg::Joy>(
+            "joy", 10,
+            std::bind(&TeleControllerInput::joy_callback, this, std::placeholders::_1));
+        
+        // Subscribe to joint states to get current pose for coordinate transforms
+        joint_state_sub_ = this->create_subscription<sensor_msgs::msg::JointState>(
+            "joint_states", 10,
+            std::bind(&TeleControllerInput::joint_state_callback, this, std::placeholders::_1));
+        
+        // Publish velocity commands
+        velocity_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
+            "/panda_velocity_cmd", 10);
+        
+        // Parameters for scaling
+        this->declare_parameter("linear_scale", 0.15);
+        this->declare_parameter("angular_scale", 0.3);
+        this->declare_parameter("deadzone", 0.15);
+        this->declare_parameter("trigger_threshold", 0.5);
+        
+        RCLCPP_INFO(this->get_logger(), "Teleop controller initialized");
+        RCLCPP_INFO(this->get_logger(), "Controls:");
+        RCLCPP_INFO(this->get_logger(), "  Left stick: X/Y translation");
+        RCLCPP_INFO(this->get_logger(), "  Right stick: Z translation & Z rotation");
+        RCLCPP_INFO(this->get_logger(), "  RIGHT TRIGGER: Enable motion (MUST BE PRESSED!)");
+        RCLCPP_INFO(this->get_logger(), "  Left trigger: Precision mode");
+        RCLCPP_INFO(this->get_logger(), "  A button: Emergency stop");
+        RCLCPP_INFO(this->get_logger(), "  B button: Zero velocity");
+        RCLCPP_INFO(this->get_logger(), "  Y button: Toggle coordinate frame (Global/Local)");
+        RCLCPP_INFO(this->get_logger(), "  Current frame: GLOBAL (base frame)");
+    }
+
+private:
+    void joint_state_callback(const sensor_msgs::msg::JointState::SharedPtr msg)
+    {
+        // Store latest joint states for coordinate frame calculations
+        if (msg->name.size() >= 7 && msg->position.size() >= 7) {
+            latest_joint_states_ = *msg;
+            has_joint_states_ = true;
+        }
+    }
+    
+    void joy_callback(const sensor_msgs::msg::Joy::SharedPtr msg)
+    {
+        // Check for B button press (button 1) for zero velocity
+        if (msg->buttons.size() > 1 && msg->buttons[1] && !previous_b_button_) {
+            RCLCPP_INFO(this->get_logger(), "B button pressed - Stopping all motion!");
+            publishZeroVelocity();
+            return;
+        }
+        
+        // Check for Y button press (button 3) for coordinate frame toggle
+        if (msg->buttons.size() > 3 && msg->buttons[3] && !previous_y_button_) {
+            use_local_frame_ = !use_local_frame_;
+            std::string frame_name = use_local_frame_ ? "LOCAL (TCP frame)" : "GLOBAL (base frame)";
+            RCLCPP_INFO(this->get_logger(), "Y button pressed - Switched to %s", frame_name.c_str());
+        }
+        
+        // Store previous button states for edge detection
+        if (msg->buttons.size() > 1) previous_b_button_ = msg->buttons[1];
+        if (msg->buttons.size() > 3) previous_y_button_ = msg->buttons[3];
+        
+        auto twist = geometry_msgs::msg::Twist();
+        
+        // Get parameters
+        double linear_scale = this->get_parameter("linear_scale").as_double();
+        double angular_scale = this->get_parameter("angular_scale").as_double();
+        double deadzone = this->get_parameter("deadzone").as_double();
+        double trigger_threshold = this->get_parameter("trigger_threshold").as_double();
+        
+        // Check if we have enough axes
+        if (msg->axes.size() < 6) {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
+                "Not enough joystick axes. Expected at least 6, got %zu", msg->axes.size());
+            publishZeroVelocity();
+            return;
+        }
+        
+        // Enhanced deadzone function
+        auto apply_deadzone = [deadzone](double value) {
+            if (std::abs(value) < deadzone) {
+                return 0.0;
+            }
+            double sign = (value > 0) ? 1.0 : -1.0;
+            return sign * (std::abs(value) - deadzone) / (1.0 - deadzone);
+        };
+        
+        // Get joystick inputs with deadzone
+        double left_x = apply_deadzone(msg->axes[0]);
+        double left_y = apply_deadzone(msg->axes[1]);
+        double right_x = apply_deadzone(msg->axes[3]);
+        double right_y = apply_deadzone(msg->axes[4]);
+        
+        // Get trigger values
+        double left_trigger = msg->axes[2];
+        double right_trigger = msg->axes[5];
+        
+        // Convert trigger range from [-1, 1] to [0, 1]
+        double left_trigger_pressed = (1.0 - left_trigger) / 2.0;
+        double right_trigger_pressed = (1.0 - right_trigger) / 2.0;
+        
+        // Check emergency stop button (button 0 = A button)
+        if (!msg->buttons.empty() && msg->buttons[0]) {
+            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 500, "EMERGENCY STOP ACTIVATED");
+            publishZeroVelocity();
+            return;
+        }
+        
+        // RIGHT TRIGGER MUST BE PRESSED TO ENABLE MOTION
+        if (right_trigger_pressed < trigger_threshold) {
+            publishZeroVelocity();
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 2000,
+                "Motion DISABLED - Press RIGHT TRIGGER to enable (current: %.2f, need: %.2f)",
+                right_trigger_pressed, trigger_threshold);
+            return;
+        }
+        
+        // Calculate speed multiplier
+        double speed_multiplier = 1.0;
+        if (left_trigger_pressed > trigger_threshold) {
+            speed_multiplier = 0.3;
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "PRECISION MODE");
+        }
+        
+        // Create base twist command (in joystick reference frame)
+        geometry_msgs::msg::Twist base_twist;
+        base_twist.linear.x = left_y * linear_scale * speed_multiplier;    // Forward/backward
+        base_twist.linear.y = -left_x * linear_scale * speed_multiplier;   // Left/right (inverted)
+        base_twist.linear.z = right_y * linear_scale * speed_multiplier;   // Up/down
+        
+        base_twist.angular.x = 0.0;  // No roll
+        base_twist.angular.y = 0.0;  // No pitch  
+        base_twist.angular.z = -right_x * angular_scale * speed_multiplier; // Yaw rotation
+        
+        // Transform twist based on coordinate frame selection
+        if (use_local_frame_ && has_joint_states_) {
+            twist = transformToLocalFrame(base_twist);
+        } else {
+            twist = base_twist; // Use global frame (base frame coordinates)
+        }
+        
+        // Publish the velocity command
+        velocity_pub_->publish(twist);
+        
+        // Debug output (throttled)
+        if (std::abs(twist.linear.x) > 0.01 || 
+            std::abs(twist.linear.y) > 0.01 || 
+            std::abs(twist.linear.z) > 0.01 || 
+            std::abs(twist.angular.z) > 0.01) {
+            
+            std::string frame_str = use_local_frame_ ? "LOCAL" : "GLOBAL";
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 500,
+                "%s: linear=[%.2f, %.2f, %.2f], angular=[%.2f, %.2f, %.2f], speed=%.2f",
+                frame_str.c_str(),
+                twist.linear.x, twist.linear.y, twist.linear.z,
+                twist.angular.x, twist.angular.y, twist.angular.z,
+                speed_multiplier);
+        } else {
+            std::string frame_str = use_local_frame_ ? "LOCAL" : "GLOBAL";
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 3000,
+                "Motion ENABLED (%s frame) - triggers=[L:%.2f, R:%.2f]",
+                frame_str.c_str(), left_trigger_pressed, right_trigger_pressed);
+        }
+    }
+    
+    geometry_msgs::msg::Twist transformToLocalFrame(const geometry_msgs::msg::Twist& global_twist)
+    {
+        // For now, we'll implement a simplified version using the end-effector orientation
+        // In a full implementation, you'd use the actual TCP frame from forward kinematics
+        
+        // This is a simplified approach - assumes we can get the end-effector orientation
+        // from joint states. In practice, you might want to use TF2 or forward kinematics.
+        
+        geometry_msgs::msg::Twist local_twist = global_twist;
+        
+        // For demonstration, we'll apply a basic rotation based on the last joint (wrist rotation)
+        if (has_joint_states_ && latest_joint_states_.position.size() >= 7) {
+            double wrist_angle = latest_joint_states_.position[6]; // panda_joint7 (wrist rotation)
+            
+            // Apply 2D rotation for linear velocities (simplified TCP frame)
+            double cos_angle = std::cos(wrist_angle);
+            double sin_angle = std::sin(wrist_angle);
+            
+            // Rotate linear velocities to TCP frame
+            double global_x = global_twist.linear.x;
+            double global_y = global_twist.linear.y;
+            
+            local_twist.linear.x = cos_angle * global_x + sin_angle * global_y;
+            local_twist.linear.y = -sin_angle * global_x + cos_angle * global_y;
+            // Z remains the same for simplified case
+            local_twist.linear.z = global_twist.linear.z;
+            
+            // Angular velocities in TCP frame (simplified)
+            local_twist.angular.x = global_twist.angular.x;
+            local_twist.angular.y = global_twist.angular.y;  
+            local_twist.angular.z = global_twist.angular.z;
+        }
+        
+        return local_twist;
+    }
+    
+    void publishZeroVelocity()
+    {
+        auto zero_twist = geometry_msgs::msg::Twist();
+        velocity_pub_->publish(zero_twist);
+    }
+    
+    rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joy_sub_;
+    rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr velocity_pub_;
+    
+    bool previous_b_button_ = false;
+    bool previous_y_button_ = false;
+    bool use_local_frame_ = false;  // false = global frame, true = local TCP frame
+    bool has_joint_states_ = false;
+    sensor_msgs::msg::JointState latest_joint_states_;
+};
+
+int main(int argc, char** argv)
+{
+    rclcpp::init(argc, argv);
+    auto node = std::make_shared<TeleControllerInput>();
+    rclcpp::spin(node);
+    rclcpp::shutdown();
+    return 0;
+}

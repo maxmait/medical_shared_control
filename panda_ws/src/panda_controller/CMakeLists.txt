@@ -32,6 +32,8 @@ find_package(kdl_parser REQUIRED)
 find_package(orocos_kdl REQUIRED)
 find_package(urdf REQUIRED)
 find_package(rcl_interfaces REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_geometry_msgs REQUIRED)
 
 add_executable(panda_velocity_controller src/panda_velocity_controller.cpp)
 ament_target_dependencies(panda_velocity_controller
@@ -45,8 +47,19 @@ ament_target_dependencies(panda_velocity_controller
   rcl_interfaces
 )
 
+add_executable(tele_controller_input src/tele_controller_input.cpp)
+ament_target_dependencies(tele_controller_input
+  rclcpp
+  sensor_msgs
+  geometry_msgs
+  tf2
+  tf2_geometry_msgs
+)
+
+
 install(TARGETS
   panda_velocity_controller
+  tele_controller_input
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -69,6 +82,7 @@ ament_python_install_package(${PROJECT_NAME})
 install(PROGRAMS
   ${PROJECT_NAME}/slider_controller.py
   ${PROJECT_NAME}/velocity_test.py
+  ${PROJECT_NAME}/test_controller_input.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
