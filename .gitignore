@@ -45,3 +45,8 @@ __pycache__/
 *.gcno
 *.gcov
 coverage/
+
+#- ==== Archive files ====
+*.zip
+*.tar.gz
+archiv/
