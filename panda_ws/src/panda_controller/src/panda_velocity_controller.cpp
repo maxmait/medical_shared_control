@@ -118,9 +118,10 @@ private:
         
         RCLCPP_INFO(this->get_logger(), "KDL chain extracted successfully");
         
-        // Initialize solvers
+        // Initialize solvers - all three now persistent members
         fk_solver_ = std::make_unique<KDL::ChainFkSolverPos_recursive>(kdl_chain_);
         jac_solver_ = std::make_unique<KDL::ChainJntToJacSolver>(kdl_chain_);
+        ik_vel_solver_ = std::make_unique<KDL::ChainIkSolverVel_pinv>(kdl_chain_);  // Add this
         
         // Initialize joint arrays
         joint_positions_.resize(kdl_chain_.getNrOfJoints());
@@ -160,9 +161,27 @@ private:
     
     void controlLoop()
     {
-        if (!kdl_initialized_ || !fk_solver_ || !jac_solver_) return;
-        
-        // Compute Jacobian
+        if (!kdl_initialized_ || !fk_solver_ || !jac_solver_ || !ik_vel_solver_) return;
+
+        // Skip computation if no velocity command is active - avoids unnecessary work
+        bool is_zero_twist = (
+            target_twist_.linear.x == 0.0 &&
+            target_twist_.linear.y == 0.0 &&
+            target_twist_.linear.z == 0.0 &&
+            target_twist_.angular.x == 0.0 &&
+            target_twist_.angular.y == 0.0 &&
+            target_twist_.angular.z == 0.0
+        );
+
+        if (is_zero_twist) {
+            // Publish zero velocities and return early
+            auto vel_msg = std_msgs::msg::Float64MultiArray();
+            vel_msg.data.assign(joint_velocities_.rows(), 0.0);
+            joint_vel_pub_->publish(vel_msg);
+            return;
+        }
+
+        // Jacobian is correctly recalculated each loop since it depends on joint positions
         KDL::Jacobian jacobian(kdl_chain_.getNrOfJoints());
         int jac_result = jac_solver_->JntToJac(joint_positions_, jacobian);
         
@@ -180,9 +199,8 @@ private:
         target_vel.rot.y(target_twist_.angular.y);
         target_vel.rot.z(target_twist_.angular.z);
         
-        // Compute joint velocities using pseudo-inverse
-        KDL::ChainIkSolverVel_pinv ik_vel_solver(kdl_chain_);
-        int ik_result = ik_vel_solver.CartToJnt(joint_positions_, target_vel, joint_velocities_);
+        // Reuse persistent solver - no longer recreated every loop
+        int ik_result = ik_vel_solver_->CartToJnt(joint_positions_, target_vel, joint_velocities_);
         
         if (ik_result < 0) {
             RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "IK velocity solver failed");
@@ -207,7 +225,8 @@ private:
     KDL::Chain kdl_chain_;
     std::unique_ptr<KDL::ChainFkSolverPos_recursive> fk_solver_;
     std::unique_ptr<KDL::ChainJntToJacSolver> jac_solver_;
-    
+    std::unique_ptr<KDL::ChainIkSolverVel_pinv> ik_vel_solver_;  // Add this
+
     KDL::JntArray joint_positions_;
     KDL::JntArray joint_velocities_;
     geometry_msgs::msg::Twist target_twist_;
