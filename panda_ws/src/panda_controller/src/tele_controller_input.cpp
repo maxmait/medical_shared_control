@@ -2,6 +2,7 @@
 #include <sensor_msgs/msg/joy.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
+#include <std_msgs/msg/bool.hpp>  // Add this include
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Matrix3x3.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
@@ -26,6 +27,10 @@ public:
         velocity_pub_ = this->create_publisher<geometry_msgs::msg::Twist>(
             "/panda_velocity_cmd", 10);
         
+        // Haptic feedback publishers - CORRECTED
+        emergency_pub_ = this->create_publisher<std_msgs::msg::Bool>("/emergency_stop", 10);
+        mode_change_pub_ = this->create_publisher<std_msgs::msg::Bool>("/teleop_mode_changed", 10);
+
         // Parameters for scaling
         this->declare_parameter("linear_scale", 0.15);
         this->declare_parameter("angular_scale", 0.3);
@@ -68,6 +73,11 @@ private:
             use_local_frame_ = !use_local_frame_;
             std::string frame_name = use_local_frame_ ? "LOCAL (TCP frame)" : "GLOBAL (base frame)";
             RCLCPP_INFO(this->get_logger(), "Y button pressed - Switched to %s", frame_name.c_str());
+            
+            // Trigger haptic feedback for mode change - CORRECTED
+            auto mode_msg = std_msgs::msg::Bool();
+            mode_msg.data = true;
+            mode_change_pub_->publish(mode_msg);
         }
         
         // Store previous button states for edge detection
@@ -113,10 +123,15 @@ private:
         double left_trigger_pressed = (1.0 - left_trigger) / 2.0;
         double right_trigger_pressed = (1.0 - right_trigger) / 2.0;
         
-        // Check emergency stop button (button 0 = A button)
+        // Check emergency stop button (button 0 = A button) - CORRECTED
         if (!msg->buttons.empty() && msg->buttons[0]) {
             RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 500, "EMERGENCY STOP ACTIVATED");
             publishZeroVelocity();
+            
+            // Trigger haptic feedback - CORRECTED
+            auto emergency_msg = std_msgs::msg::Bool();
+            emergency_msg.data = true;
+            emergency_pub_->publish(emergency_msg);
             return;
         }
         
@@ -179,12 +194,6 @@ private:
     
     geometry_msgs::msg::Twist transformToLocalFrame(const geometry_msgs::msg::Twist& global_twist)
     {
-        // For now, we'll implement a simplified version using the end-effector orientation
-        // In a full implementation, you'd use the actual TCP frame from forward kinematics
-        
-        // This is a simplified approach - assumes we can get the end-effector orientation
-        // from joint states. In practice, you might want to use TF2 or forward kinematics.
-        
         geometry_msgs::msg::Twist local_twist = global_twist;
         
         // For demonstration, we'll apply a basic rotation based on the last joint (wrist rotation)
@@ -223,6 +232,10 @@ private:
     rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr joint_state_sub_;
     rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr velocity_pub_;
     
+    // Haptic feedback publishers - CORRECTED
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr emergency_pub_;
+    rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr mode_change_pub_;
+
     bool previous_b_button_ = false;
     bool previous_y_button_ = false;
     bool use_local_frame_ = false;  // false = global frame, true = local TCP frame
