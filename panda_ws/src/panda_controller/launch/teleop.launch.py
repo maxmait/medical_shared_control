@@ -187,3 +187,5 @@ def generate_launch_description():
         tele_controller,
         haptic_feedback
     ])
+#Argument example:
+#ros2 launch panda_controller teleop.launch.py enable_haptic:=true enable_force_feedback:=true linear_scale:=0.1
