@@ -1,0 +1,8 @@
+<sdf version="1.6">
+  <model name="simple_human_model">
+    <static>true</static>
+    <include>
+      <uri>model://simple_human_model/human_model.urdf</uri>
+    </include>
+  </model>
+</sdf>
