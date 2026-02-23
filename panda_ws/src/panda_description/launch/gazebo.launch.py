@@ -22,12 +22,16 @@ def generate_launch_description():
         description="Absolute path to robot urdf file"
     )
 
-    world_name_arg = DeclareLaunchArgument(name="world_name", default_value="empty")
+    world_file_arg = DeclareLaunchArgument(
+        name="world_file",
+        default_value="empty.world",
+        description="World file name under panda_description/worlds (e.g., empty.world or human_world.sdf)"
+    )
 
     world_path = PathJoinSubstitution([
             panda_description,
             "worlds",
-            PythonExpression(expression=["'", LaunchConfiguration("world_name"), "'", " + '.world'"])
+            LaunchConfiguration("world_file")
         ]
     )
 
@@ -88,24 +92,18 @@ def generate_launch_description():
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=[
-            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
-            "/camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo"
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock"
         ],
-    )
-
-    ros_gz_image_bridge = Node(
-        package="ros_gz_image",
-        executable="image_bridge",
-        arguments=["/camera/image_raw"]
     )
 
     return LaunchDescription([
         model_arg,
-        world_name_arg,
+        world_file_arg,
         gazebo_resource_path,
         robot_state_publisher_node,
         gazebo,
         gz_spawn_entity,
-        gz_ros2_bridge
-        #ros_gz_image_bridge
+        gz_ros2_bridge,
     ])
+
+    #ros2 launch panda_description gazebo.launch.py world_file:=medical_procedure.sdf
