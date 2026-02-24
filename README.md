@@ -5,13 +5,34 @@ for simulated surgical robotics, using a Franka Emika Panda robot in ROS2/Gazebo
 
 Structure:
 - core/: standalone C++ safety & control library (ROS-independent)
-- ros2_ws/: ROS2 workspace for simulation and integration
+- panda_ws/: ROS2 workspace for simulation and integration
 
 Goal:
 Design and evaluate distance-based virtual safety constraints and shared control
 for precise human-guided manipulation near delicate tissue.
 
 ## Quick Start Commands
+
+### Demo Launch (Gazebo + RViz camera + teleop)
+
+```bash
+# Terminal 1: Gazebo world with the human model
+ros2 launch panda_description gazebo.launch.py world_file:=medical_procedure.sdf
+
+# Terminal 2: Enable velocity control
+ros2 launch panda_controller enable_velocity_control.launch.py
+
+# Terminal 3: RViz camera feed
+ros2 launch panda_description rviz_camera.launch.py
+
+# Terminal 4: Teleop with haptic controller
+ros2 launch panda_controller teleop.launch.py
+```
+
+This launches the simulation, the camera feed, and teleop so you can control
+robot velocity with a haptic controller.
+
+![Robot control demo](readme_assets/robot_control_demo.gif)
 
 ### Method 1: Step-by-step Launch (Recommended for Development)
 
@@ -139,6 +160,8 @@ ros2 run panda_controller velocity_test.py
 
 ---
 
+
+Test vibration: sudo fftest /dev/input/event20
 ## Project Status
 - ✅ Panda robot simulation in Gazebo
 - ✅ ROS2 control integration
