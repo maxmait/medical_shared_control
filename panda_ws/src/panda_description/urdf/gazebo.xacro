@@ -118,23 +118,7 @@
       <state_interface name="velocity"/>
     </joint>
 
-    <!-- Gripper Finger Joint 1 -->
-    <joint name="panda_finger_joint1">
-      <command_interface name="position">
-        <param name="min">0.0</param>
-        <param name="max">0.04</param>
-      </command_interface>
-      <state_interface name="position"/>
-    </joint>
 
-    <!-- Gripper Finger Joint 2 (Mimics Joint 1) -->
-    <joint name="panda_finger_joint2">
-      <command_interface name="position">
-        <param name="min">0.0</param>
-        <param name="max">0.04</param>
-      </command_interface>
-      <state_interface name="position"/>
-    </joint>
 
   </ros2_control>
 

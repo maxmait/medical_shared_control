@@ -38,18 +38,6 @@ def generate_launch_description():
         ]
     )
 
-    gripper_controller_spawner = TimerAction(
-        period=4.0,
-        actions=[
-            Node(
-                package="controller_manager",
-                executable="spawner",
-                arguments=["gripper_controller", "--controller-manager", "/controller_manager"],
-                parameters=[{'use_sim_time': use_sim_time}]
-            )
-        ]
-    )
-
     # Optional: spawn velocity controller (but don't activate it)
     velocity_controller_spawner = TimerAction(
         period=5.0,
@@ -75,6 +63,5 @@ def generate_launch_description():
         ),
         joint_state_broadcaster_spawner,
         arm_controller_spawner,
-        gripper_controller_spawner,
         velocity_controller_spawner,
     ])
