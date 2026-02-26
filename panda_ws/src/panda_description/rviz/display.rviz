@@ -128,6 +128,19 @@ Visualization Manager:
       Update Interval: 0
       Value: true
       Visual Enabled: true
+    - Class: rviz_default_plugins/LaserScan
+      Enabled: true
+      Name: Probe Scan
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /probe/scan
+      Color: 255; 0; 0
+      Size (m): 0.005
+      Style: Points
+      Value: true
     - Class: rviz_default_plugins/TF
       Enabled: true
       Frame Timeout: 15
