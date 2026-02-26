@@ -48,6 +48,26 @@ def generate_launch_description():
             )
         ]
     )
+
+    # Send initial joint pose before switching to velocity control
+    initial_pose = TimerAction(
+        period=6.0,
+        actions=[
+            ExecuteProcess(
+                cmd=[
+                    'ros2', 'topic', 'pub', '--once',
+                    '/arm_controller/joint_trajectory',
+                    'trajectory_msgs/msg/JointTrajectory',
+                    "joint_names: ['panda_joint1','panda_joint2','panda_joint3','panda_joint4','panda_joint5','panda_joint6','panda_joint7']\n"
+                    "points:\n"
+                    "- positions: [0.049, -0.13, -0.19, -1.69, -0.021, 1.55, 0.29]\n"
+                    "  time_from_start: {sec: 2}"
+                ],
+                output='screen',
+                name='set_initial_joint_pose'
+            )
+        ]
+    )
     
     # Start velocity controller node (with even more delay)
     velocity_controller = TimerAction(
@@ -68,6 +88,7 @@ def generate_launch_description():
     return LaunchDescription([
         use_sim_time_arg,
         controllers_launch,
+        initial_pose,
         velocity_switch,
         velocity_controller
     ])
