@@ -11,6 +11,12 @@ Goal:
 Design and evaluate distance-based virtual safety constraints and shared control
 for precise human-guided manipulation near delicate tissue.
 
+LiDAR distance estimation:
+A single-beam LiDAR mounted at the tool tip measures the line-of-sight distance
+to tissue surfaces. The range reading is used as a real-time proxy for tool-to-
+tissue separation and feeds the safety constraint logic that limits motion as
+the tool approaches the tissue.
+
 ## Quick Start Commands
 
 ### Demo Launch (Gazebo + RViz camera + teleop)
@@ -32,7 +38,7 @@ ros2 launch panda_controller teleop.launch.py
 This launches the simulation, the camera feed, and teleop so you can control
 robot velocity with a haptic controller.
 
-![Robot control demo](readme_assets/robot_control_demo.gif)
+![Robot control demo](readme_assets/robot_demo_2.gif)
 
 ### Method 1: Step-by-step Launch (Recommended for Development)
 
