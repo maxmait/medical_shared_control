@@ -1,0 +1,8 @@
+<sdf version="1.6">
+  <model name="human_mesh_model">
+    <static>false</static>
+    <include>
+      <uri>model://human_mesh_model/human_mesh_model.urdf</uri>
+    </include>
+  </model>
+</sdf>
