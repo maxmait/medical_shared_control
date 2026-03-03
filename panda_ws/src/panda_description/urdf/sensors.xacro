@@ -1,36 +1,38 @@
 <?xml version="1.0" ?>
 <robot name="panda" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-<material name="red">
-  <color rgba="1 0 0 1"/>
-</material>
+  <material name="red_transparent">
+    <color rgba="1 0 0 0.35"/>
+  </material>
+
+<visual>
+  <origin xyz="0 0 0" rpy="0 0 0"/>
+  <geometry>
+    <box size="0.03 0.03 0.2"/>
+  </geometry>
+  <material name="red_transparent"/>
+</visual>
 
     <link name="camera_link">
         <inertial>
             <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
-            <mass value="0.1"/>
+            <mass value="0.001"/>
             <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
         </inertial>
         <visual>
             <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
             <geometry>
-                <box size="0.1 0.1 0.05"/>
+              <box size="0.03 0.03 0.02"/>
             </geometry>
-            <material name="red"/>
+            <material name="red_transparent"/>
         </visual>
-        <collision>
-            <origin xyz="0 0 0" rpy="0.0 0.0 0.0"/>
-            <geometry>
-                <box size="0.1 0.1 0.05"/>
-            </geometry>
-            <material name="red"/>
-        </collision>
     </link>
     
     <joint name="camera_joint" type="fixed">
-        <origin xyz="0.4 0.3 1.0" rpy="0.0 0.0 0.0"/>
-        <parent link="panda_link0"/>
-        <child link="camera_link"/>
+        <origin xyz="0.4525082208 0.42136713064 0.6"
+          rpy="0.0000 0 0"/>
+    <parent link="panda_link0"/>
+    <child link="camera_link"/>
     </joint>
     
     <link name="camera_link_optical" />
