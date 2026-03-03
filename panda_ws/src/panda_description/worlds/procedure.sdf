@@ -1,0 +1,3267 @@
+<sdf version='1.9'>
+  <world name='empty_world'>
+    <gravity>0 0 -9.8</gravity>
+    <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
+    <atmosphere type='adiabatic'/>
+    <physics type='ode'>
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1</ambient>
+      <background>0.7 0.7 0.7 1</background>
+      <shadows>true</shadows>
+    </scene>
+    <model name='CoffeeTable_1'>
+      <static>true</static>
+      <model name='aws_robomaker_residential_CoffeeTable_01'>
+        <link name='link'>
+          <inertial>
+            <mass>21.699999999999999</mass>
+            <inertia>
+              <ixx>0.81374999999999975</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>2.76675</iyy>
+              <iyz>0</iyz>
+              <izz>3.254</izz>
+            </inertia>
+          </inertial>
+          <collision name='collision'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_collision.DAE</uri>
+                <scale>1 1 1</scale>
+              </mesh>
+            </geometry>
+            <surface>
+              <contact>
+                <ode>
+                  <max_vel>0.01</max_vel>
+                </ode>
+              </contact>
+            </surface>
+          </collision>
+          <visual name='visual'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_visual.DAE</uri>
+              </mesh>
+            </geometry>
+            <meta>
+              <layer>1</layer>
+            </meta>
+          </visual>
+        </link>
+        <static>true</static>
+      </model>
+      <pose>0 0 0.041983 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='CoffeeTable_2'>
+      <static>true</static>
+      <model name='aws_robomaker_residential_CoffeeTable_01'>
+        <link name='link'>
+          <inertial>
+            <mass>21.699999999999999</mass>
+            <inertia>
+              <ixx>0.81374999999999975</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>2.76675</iyy>
+              <iyz>0</iyz>
+              <izz>3.254</izz>
+            </inertia>
+          </inertial>
+          <collision name='collision'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_collision.DAE</uri>
+                <scale>1 1 1</scale>
+              </mesh>
+            </geometry>
+            <surface>
+              <contact>
+                <ode>
+                  <max_vel>0.01</max_vel>
+                </ode>
+              </contact>
+            </surface>
+          </collision>
+          <visual name='visual'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_visual.DAE</uri>
+              </mesh>
+            </geometry>
+            <meta>
+              <layer>1</layer>
+            </meta>
+          </visual>
+        </link>
+        <static>true</static>
+      </model>
+      <pose>1.2577 0 0.041983 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='CoffeeTable_3'>
+      <static>true</static>
+      <model name='aws_robomaker_residential_CoffeeTable_01'>
+        <link name='link'>
+          <inertial>
+            <mass>21.699999999999999</mass>
+            <inertia>
+              <ixx>0.81374999999999975</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>2.76675</iyy>
+              <iyz>0</iyz>
+              <izz>3.254</izz>
+            </inertia>
+          </inertial>
+          <collision name='collision'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_collision.DAE</uri>
+                <scale>1 1 1</scale>
+              </mesh>
+            </geometry>
+            <surface>
+              <contact>
+                <ode>
+                  <max_vel>0.01</max_vel>
+                </ode>
+              </contact>
+            </surface>
+          </collision>
+          <visual name='visual'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_visual.DAE</uri>
+              </mesh>
+            </geometry>
+            <meta>
+              <layer>1</layer>
+            </meta>
+          </visual>
+        </link>
+        <static>true</static>
+      </model>
+      <pose>1.26554 0.637963 0.041983 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='CoffeeTable_4'>
+      <static>true</static>
+      <model name='aws_robomaker_residential_CoffeeTable_01'>
+        <link name='link'>
+          <inertial>
+            <mass>21.699999999999999</mass>
+            <inertia>
+              <ixx>0.81374999999999975</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>2.76675</iyy>
+              <iyz>0</iyz>
+              <izz>3.254</izz>
+            </inertia>
+          </inertial>
+          <collision name='collision'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_collision.DAE</uri>
+                <scale>1 1 1</scale>
+              </mesh>
+            </geometry>
+            <surface>
+              <contact>
+                <ode>
+                  <max_vel>0.01</max_vel>
+                </ode>
+              </contact>
+            </surface>
+          </collision>
+          <visual name='visual'>
+            <geometry>
+              <mesh>
+                <uri>model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_visual.DAE</uri>
+              </mesh>
+            </geometry>
+            <meta>
+              <layer>1</layer>
+            </meta>
+          </visual>
+        </link>
+        <static>true</static>
+      </model>
+      <pose>-0.008642 0.643146 0.041983 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='ground_plane'>
+      <static>true</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1 1</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>0 0 0 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='aws_robomaker_residential_CoffeeTable_01'>
+      <link name='link'>
+        <inertial>
+          <mass>21.699999999999999</mass>
+          <inertia>
+            <ixx>0.81374999999999997</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>2.76675</iyy>
+            <iyz>0</iyz>
+            <izz>3.254</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>file:///home/max/medical_robot_shared_control/panda_ws/install/panda_description/share/panda_description/models/aws_robomaker_residential_CoffeeTable_01/model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_collision.DAE</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <max_vel>0.01</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>file:///home/max/medical_robot_shared_control/panda_ws/install/panda_description/share/panda_description/models/aws_robomaker_residential_CoffeeTable_01/model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_visual.DAE</uri>
+            </mesh>
+          </geometry>
+          <meta>
+            <layer>1</layer>
+          </meta>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <static>true</static>
+      <pose>-0.008642 0.643146 0.36 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='aws_robomaker_residential_CoffeeTable_01_0'>
+      <link name='link'>
+        <inertial>
+          <mass>21.699999999999999</mass>
+          <inertia>
+            <ixx>0.81374999999999997</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>2.76675</iyy>
+            <iyz>0</iyz>
+            <izz>3.254</izz>
+          </inertia>
+          <pose>0 0 0 0 -0 0</pose>
+        </inertial>
+        <collision name='collision'>
+          <geometry>
+            <mesh>
+              <uri>file:///home/max/medical_robot_shared_control/panda_ws/install/panda_description/share/panda_description/models/aws_robomaker_residential_CoffeeTable_01/model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_collision.DAE</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <surface>
+            <contact>
+              <ode>
+                <max_vel>0.01</max_vel>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>file:///home/max/medical_robot_shared_control/panda_ws/install/panda_description/share/panda_description/models/aws_robomaker_residential_CoffeeTable_01/model://aws_robomaker_residential_CoffeeTable_01/meshes/aws_CoffeeTable_01_visual.DAE</uri>
+            </mesh>
+          </geometry>
+          <meta>
+            <layer>1</layer>
+          </meta>
+        </visual>
+        <pose>0 0 0 0 -0 0</pose>
+        <enable_wind>false</enable_wind>
+      </link>
+      <static>true</static>
+      <pose>1.26554 0.637963 0.36 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='head_stabilizers'>
+      <static>true</static>
+      <link name='left_block'>
+        <pose>0.2 0.61405 0.73 0 -0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.12 0.04 0.12</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.12 0.04 0.12</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.4 0.4 1</ambient>
+            <diffuse>0.4 0.4 0.4 1</diffuse>
+          </material>
+        </visual>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <link name='right_block'>
+        <pose>0.2 0.35405 0.73 0 -0 0</pose>
+        <collision name='collision'>
+          <geometry>
+            <box>
+              <size>0.12 0.04 0.12</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode/>
+            </friction>
+            <bounce/>
+            <contact/>
+          </surface>
+        </collision>
+        <visual name='visual'>
+          <geometry>
+            <box>
+              <size>0.12 0.04 0.12</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.4 0.4 0.4 1</ambient>
+            <diffuse>0.4 0.4 0.4 1</diffuse>
+          </material>
+        </visual>
+        <inertial>
+          <pose>0 0 0 0 -0 0</pose>
+          <mass>1</mass>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+        </inertial>
+        <enable_wind>false</enable_wind>
+      </link>
+      <pose>0 0 0 0 -0 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <model name='human_mesh_model_0'>
+      <static>false</static>
+      <model name='HumanModel'>
+        <link name='Pelvis'>
+          <inertial>
+            <pose>1.232740575310868e-08 0 -1.868130288985385e-08 0 0 0</pose>
+            <mass>7.0980060000000007</mass>
+            <inertia>
+              <ixx>0.072762192995286412</ixx>
+              <ixy>0</ixy>
+              <ixz>1.1602498365385991e-08</ixz>
+              <iyy>0.02851499711262644</iyy>
+              <iyz>0</iyz>
+              <izz>0.080476707445157794</izz>
+            </inertia>
+          </inertial>
+          <collision name='Pelvis_collision'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.175 0.3247 0.1326</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='Pelvis_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Pelvis.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='Pelvis_RightRecAbd_visual_1'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Pelvis_RightRecAbd.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='Pelvis_RightErcSpin_visual_2'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Pelvis_RightErcSpin.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='Pelvis_LeftRecAbd_visual_3'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Pelvis_LeftRecAbd.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='Pelvis_LeftErcSpin_visual_4'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Pelvis_LeftErcSpin.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jL5S1_rotx' type='revolute'>
+          <pose relative_to='Pelvis'>0 0 0.0663 0 0 0</pose>
+          <parent>Pelvis</parent>
+          <child>LowerTrunk_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.61086499999999999</lower>
+              <upper>0.61086499999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LowerTrunk_f1'>
+          <pose relative_to='jL5S1_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jL5S1_roty' type='revolute'>
+          <pose relative_to='LowerTrunk_f1'>0 0 0 0 0 0</pose>
+          <parent>LowerTrunk_f1</parent>
+          <child>LowerTrunk</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.52359900000000004</lower>
+              <upper>1.3089999999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LowerTrunk'>
+          <pose relative_to='jL5S1_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0.08500000000000001 0 0 0</pose>
+            <mass>9.2940000000000005</mass>
+            <inertia>
+              <ixx>0.090149972179999996</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.046102112500000007</iyy>
+              <iyz>0</iyz>
+              <izz>0.091485984679999993</izz>
+            </inertia>
+          </inertial>
+          <collision name='LowerTrunk_collision'>
+            <pose>0 0 0.08500000000000001 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.175 0.2958 0.17</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LowerTrunk_visual'>
+            <pose>0 0 0.08500000000000001 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LowerTrunk.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LowerTrunk_RightRecAbd_visual_1'>
+            <pose>0 0 0.08500000000000001 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LowerTrunk_RightRecAbd.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LowerTrunk_RightErcSpin_visual_2'>
+            <pose>0 0 0.08500000000000001 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LowerTrunk_RightErcSpin.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LowerTrunk_LefttRecAbd_visual_3'>
+            <pose>0 0 0.08500000000000001 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LowerTrunk_LefttRecAbd.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LowerTrunk_LeftErcSpin_visual_4'>
+            <pose>0 0 0.08500000000000001 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LowerTrunk_LeftErcSpin.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jT9T8_rotx' type='revolute'>
+          <pose relative_to='LowerTrunk'>0 0 0.17 0 0 0</pose>
+          <parent>LowerTrunk</parent>
+          <child>UpperTrunk_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.34906599999999999</lower>
+              <upper>0.34906599999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='UpperTrunk_f1'>
+          <pose relative_to='jT9T8_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jT9T8_roty' type='revolute'>
+          <pose relative_to='UpperTrunk_f1'>0 0 0 0 0 0</pose>
+          <parent>UpperTrunk_f1</parent>
+          <child>UpperTrunk_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.261799</lower>
+              <upper>0.69813199999999997</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='UpperTrunk_f2'>
+          <pose relative_to='jT9T8_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jT9T8_rotz' type='revolute'>
+          <pose relative_to='UpperTrunk_f2'>0 0 0 0 0 0</pose>
+          <parent>UpperTrunk_f2</parent>
+          <child>UpperTrunk</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.61086499999999999</lower>
+              <upper>0.61086499999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='UpperTrunk'>
+          <pose relative_to='jT9T8_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>4.217614063222494e-24 0 0.09349999999999996 0 0 0</pose>
+            <mass>3.138004</mass>
+            <inertia>
+              <ixx>0.01477731884667669</ixx>
+              <ixy>0</ixy>
+              <ixz>3.2724999999999997e-08</ixz>
+              <iyy>0.017152936594000009</iyy>
+              <iyz>0</iyz>
+              <izz>0.01364135850267667</izz>
+            </inertia>
+          </inertial>
+          <collision name='UpperTrunk_collision'>
+            <pose>0 0 0.0935 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.175 0.146767 0.187</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='UpperTrunk_visual'>
+            <pose>0 0 0.0935 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/UpperTrunk.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='UpperTrunk_RightRecAbd_visual_1'>
+            <pose>0 0 0.0935 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/UpperTrunk_RightRecAbd.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='UpperTrunk_RightErcSpin_visual_2'>
+            <pose>0 0 0.0935 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/UpperTrunk_RightErcSpin.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='UpperTrunk_LeftRecAbd_visual_3'>
+            <pose>0 0 0.0935 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/UpperTrunk_LeftRecAbd.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='UpperTrunk_LeftErcSpin_visual_4'>
+            <pose>0 0 0.0935 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.583333 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/UpperTrunk_LeftErcSpin.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jC7LeftShoulder_rotx' type='revolute'>
+          <pose relative_to='UpperTrunk'>0 0.07338333333333334 0.158 -0.1572665 0 0</pose>
+          <parent>UpperTrunk</parent>
+          <child>LeftShoulder</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.1572665</lower>
+              <upper>0.78539800000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftShoulder'>
+          <pose relative_to='jC7LeftShoulder_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0.07338333333333334 0 1.5708 0 0</pose>
+            <mass>3.1379999999999999</mass>
+            <inertia>
+              <ixx>0.01</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.01</iyy>
+              <iyz>0</iyz>
+              <izz>0.01</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftShoulder_collision'>
+            <pose>0 0.07338333333333334 0 1.5708 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.14676666666666671</length>
+                <radius>0.029000000000000001</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftShoulder_visual'>
+            <pose>0 0.07338333333333334 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftShoulder.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jLeftShoulder_rotx' type='revolute'>
+          <pose relative_to='LeftShoulder'>0 0.1467666666666667 0 -1.4 0 0</pose>
+          <parent>LeftShoulder</parent>
+          <child>LeftShoulder_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-1.5708</lower>
+              <upper>2.3561899999999998</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftShoulder_f1'>
+          <pose relative_to='jLeftShoulder_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftShoulder_roty' type='revolute'>
+          <pose relative_to='LeftShoulder_f1'>0 0 0 0 0 0</pose>
+          <parent>LeftShoulder_f1</parent>
+          <child>LeftShoulder_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-1.5708</lower>
+              <upper>1.5708</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftShoulder_f2'>
+          <pose relative_to='jLeftShoulder_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftShoulder_rotz' type='revolute'>
+          <pose relative_to='LeftShoulder_f2'>0 0 0 0 0 0</pose>
+          <parent>LeftShoulder_f2</parent>
+          <child>LeftUpperArm</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-3.1415899999999999</lower>
+              <upper>0.78539800000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftUpperArm'>
+          <pose relative_to='jLeftShoulder_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>1.837766999027885e-08 0.1580997996200258 1.837766999027885e-08 1.5708 0 0</pose>
+            <mass>1.5780019999999999</mass>
+            <inertia>
+              <ixx>0.013479536192156111</ixx>
+              <ixy>-1.630830430370814e-14</ixy>
+              <ixz>-4.5848941889517766e-09</ixz>
+              <iyy>0.013479536192122421</iyy>
+              <iyz>-4.585074727465222e-09</iyz>
+              <izz>0.010000021682032611</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftUpperArm_collision'>
+            <pose>0 0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.31619999999999998</length>
+                <radius>0.029000000000000001</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftUpperArm_visual'>
+            <pose>0 0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftUpperArm.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftUpperArm_fixed_joint_lump__LeftTricBrac_visual_1'>
+            <pose>0 0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftTricBrac.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftUpperArm_fixed_joint_lump__LeftBicBrac_visual_2'>
+            <pose>0 0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftBicBrac.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jLeftElbow_roty' type='revolute'>
+          <pose relative_to='LeftUpperArm'>0 0.3162 0 0 0 0</pose>
+          <parent>LeftUpperArm</parent>
+          <child>LeftForeArm_f1</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-1.5708</lower>
+              <upper>1.48353</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftForeArm_f1'>
+          <pose relative_to='jLeftElbow_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftElbow_rotz' type='revolute'>
+          <pose relative_to='LeftForeArm_f1'>0 0 0 0 0 0</pose>
+          <parent>LeftForeArm_f1</parent>
+          <child>LeftForeArm</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-2.5307300000000001</lower>
+              <upper>0</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftForeArm'>
+          <pose relative_to='jLeftElbow_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>-3.676341938715951e-24 0.1240994484468958 1.122587909938807e-23 1.5708 0 0</pose>
+            <mass>0.90000400000000003</mass>
+            <inertia>
+              <ixx>0.010000101602966219</ixx>
+              <ixy>9.261707359025943e-26</ixy>
+              <ixz>4.1061029093644721e-25</ixz>
+              <iyy>0.01000010462796619</iyy>
+              <iyz>-2.2628032984786599e-13</iyz>
+              <izz>0.01000004302499999</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftForeArm_collision'>
+            <pose>0 0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.2482</length>
+                <radius>0.0275</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftForeArm_visual'>
+            <pose>0 0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.611111 0.611111 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftForeArm.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftForeArm_fixed_joint_lump__LeftFlexCarp_visual_1'>
+            <pose>0 0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.611111 0.611111 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftFlexCarp.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftForeArm_fixed_joint_lump__LeftExtCarp_visual_2'>
+            <pose>0 0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.611111 0.611111 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftExtCarp.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jLeftWrist_rotx' type='revolute'>
+          <pose relative_to='LeftForeArm'>0 0.2482 0 0 0 0</pose>
+          <parent>LeftForeArm</parent>
+          <child>LeftHand_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-1.0471999999999999</lower>
+              <upper>0.87266500000000002</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftHand_f1'>
+          <pose relative_to='jLeftWrist_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftWrist_rotz' type='revolute'>
+          <pose relative_to='LeftHand_f1'>0 0 0 0 0 0</pose>
+          <parent>LeftHand_f1</parent>
+          <child>LeftHand</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.34906599999999999</lower>
+              <upper>0.52359900000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftHand'>
+          <pose relative_to='jLeftWrist_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>8.135317446866208e-08 0.09179999999999999 -3.530953752980125e-08 0 0 0</pose>
+            <mass>0.35401199999999988</mass>
+            <inertia>
+              <ixx>0.01000003078124956</ixx>
+              <ixy>-4.1359030627651379e-25</ixy>
+              <ixz>1.7999898308531909e-10</ixz>
+              <iyy>0.010000031195967219</iyy>
+              <iyz>2.067951531382569e-25</iyz>
+              <izz>0.01000003041471766</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftHand_collision'>
+            <pose>0 0.09179999999999999 0 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.072 0.1836 0.025</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftHand_visual'>
+            <pose>0 0.09179999999999999 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.9 1.0303 0.555556</scale>
+                <uri>model://human_mesh_model/meshes/LeftHand.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftHandCOM_visual_1'>
+            <pose>0 0.09179999999999999 0 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0 0 0</size>
+              </box>
+            </geometry>
+          </visual>
+        </link>
+        <joint name='jC7RightShoulder_rotx' type='revolute'>
+          <pose relative_to='UpperTrunk'>0 -0.07338333333333334 0.158 0.0872665 0 0</pose>
+          <parent>UpperTrunk</parent>
+          <child>RightShoulder</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.78539800000000004</lower>
+              <upper>0.087266499999999997</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightShoulder'>
+          <pose relative_to='jC7RightShoulder_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 -0.07338333333333334 0 1.5708 0 0</pose>
+            <mass>3.1379999999999999</mass>
+            <inertia>
+              <ixx>0.01</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.01</iyy>
+              <iyz>0</iyz>
+              <izz>0.01</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightShoulder_collision'>
+            <pose>0 -0.07338333333333334 0 1.5708 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.14676666666666671</length>
+                <radius>0.029000000000000001</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightShoulder_visual'>
+            <pose>0 -0.07338333333333334 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightShoulder.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jRightShoulder_rotx' type='revolute'>
+          <pose relative_to='RightShoulder'>0 -0.1467666666666667 0 1.4 0 0</pose>
+          <parent>RightShoulder</parent>
+          <child>RightShoulder_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-2.3561899999999998</lower>
+              <upper>1.5708</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightShoulder_f1'>
+          <pose relative_to='jRightShoulder_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightShoulder_roty' type='revolute'>
+          <pose relative_to='RightShoulder_f1'>0 0 0 0 0 0</pose>
+          <parent>RightShoulder_f1</parent>
+          <child>RightShoulder_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-1.5708</lower>
+              <upper>1.5708</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightShoulder_f2'>
+          <pose relative_to='jRightShoulder_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightShoulder_rotz' type='revolute'>
+          <pose relative_to='RightShoulder_f2'>0 0 0 0 0 0</pose>
+          <parent>RightShoulder_f2</parent>
+          <child>RightUpperArm</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.78539800000000004</lower>
+              <upper>3.1415899999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightUpperArm'>
+          <pose relative_to='jRightShoulder_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>-1.837766999027885e-08 -0.1580997996200258 1.837766999027885e-08 1.5708 0 0</pose>
+            <mass>1.5780019999999999</mass>
+            <inertia>
+              <ixx>0.013479536192156111</ixx>
+              <ixy>-1.7374209162931132e-14</ixy>
+              <ixz>-4.5848941889478607e-09</ixz>
+              <iyy>0.01347953619218979</iyy>
+              <iyz>4.5847136502488191e-09</iyz>
+              <izz>0.010000021681965249</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightUpperArm_collision'>
+            <pose>0 -0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.31619999999999998</length>
+                <radius>0.029000000000000001</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightUpperArm_visual'>
+            <pose>0 -0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightUpperArm.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightUpperArm_fixed_joint_lump__RightTricBrac_visual_1'>
+            <pose>0 -0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightTricBrac.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightUpperArm_fixed_joint_lump__RightBicBrac_visual_2'>
+            <pose>0 -0.1581 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.644444 0.644444 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightBicBrac.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jRightElbow_roty' type='revolute'>
+          <pose relative_to='RightUpperArm'>0 -0.3162 0 0 0 0</pose>
+          <parent>RightUpperArm</parent>
+          <child>RightForeArm_f1</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-1.5708</lower>
+              <upper>1.48353</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightForeArm_f1'>
+          <pose relative_to='jRightElbow_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightElbow_rotz' type='revolute'>
+          <pose relative_to='RightForeArm_f1'>0 0 0 0 0 0</pose>
+          <parent>RightForeArm_f1</parent>
+          <child>RightForeArm</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>0</lower>
+              <upper>2.5307300000000001</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightForeArm'>
+          <pose relative_to='jRightElbow_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>6.111083950737997e-08 -0.1240994484468958 3.055541975368999e-08 1.5708 0 0</pose>
+            <mass>0.90000400000000003</mass>
+            <inertia>
+              <ixx>0.01000010235921537</ixx>
+              <ixy>-7.5622324809680693e-10</ixy>
+              <ixz>6.8254724423884064e-09</ixz>
+              <iyy>0.010000104627987901</iyy>
+              <iyz>3.4125113297259499e-09</iyz>
+              <izz>0.01000004378122071</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightForeArm_collision'>
+            <pose>0 -0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.2482</length>
+                <radius>0.0275</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightForeArm_visual'>
+            <pose>0 -0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.611111 0.611111 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightForeArm.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightForeArm_fixed_joint_lump__RightFlexCarp_visual_1'>
+            <pose>0 -0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.611111 0.611111 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightFlexCarp.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightForeArm_fixed_joint_lump__RightExtCarp_visual_2'>
+            <pose>0 -0.1241 0 1.5708 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.611111 0.611111 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightExtCarp.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jRightWrist_rotx' type='revolute'>
+          <pose relative_to='RightForeArm'>0 -0.2482 0 0 0 0</pose>
+          <parent>RightForeArm</parent>
+          <child>RightHand_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.87266500000000002</lower>
+              <upper>1.0471999999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightHand_f1'>
+          <pose relative_to='jRightWrist_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightWrist_rotz' type='revolute'>
+          <pose relative_to='RightHand_f1'>0 0 0 0 0 0</pose>
+          <parent>RightHand_f1</parent>
+          <child>RightHand</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.52359900000000004</lower>
+              <upper>0.34906599999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightHand'>
+          <pose relative_to='jRightWrist_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>8.135317446866208e-08 -0.09179999999999999 4.673178381258419e-24 0 0 0</pose>
+            <mass>0.35401199999999988</mass>
+            <inertia>
+              <ixx>0.0100000303125</ixx>
+              <ixy>4.1359030627651379e-25</ixy>
+              <ixz>1.3458753738024251e-31</ixz>
+              <iyy>0.010000030727217659</iyy>
+              <iyz>-1.518703604647358e-25</iyz>
+              <izz>0.01000003041471766</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightHand_collision'>
+            <pose>0 -0.09179999999999999 0 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.072 0.1836 0.025</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightHand_visual'>
+            <pose>0 -0.09179999999999999 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.9 1.0303 0.555556</scale>
+                <uri>model://human_mesh_model/meshes/RightHand.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightHandCOM_visual_1'>
+            <pose>0 -0.09179999999999999 0 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0 0 0</size>
+              </box>
+            </geometry>
+          </visual>
+        </link>
+        <joint name='jT1C7_rotx' type='revolute'>
+          <pose relative_to='UpperTrunk'>0 0 0.187 0 0 0</pose>
+          <parent>UpperTrunk</parent>
+          <child>Neck_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.61086499999999999</lower>
+              <upper>0.61086499999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='Neck_f1'>
+          <pose relative_to='jT1C7_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jT1C7_roty' type='revolute'>
+          <pose relative_to='Neck_f1'>0 0 0 0 0 0</pose>
+          <parent>Neck_f1</parent>
+          <child>Neck_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.95993099999999998</lower>
+              <upper>1.5708</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='Neck_f2'>
+          <pose relative_to='jT1C7_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jT1C7_rotz' type='revolute'>
+          <pose relative_to='Neck_f2'>0 0 0 0 0 0</pose>
+          <parent>Neck_f2</parent>
+          <child>Neck</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-1.22173</lower>
+              <upper>1.22173</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='Neck'>
+          <pose relative_to='jT1C7_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0.0442 0 0 0</pose>
+            <mass>1.1639999999999999</mass>
+            <inertia>
+              <ixx>0.01</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.01</iyy>
+              <iyz>0</iyz>
+              <izz>0.01</izz>
+            </inertia>
+          </inertial>
+          <collision name='Neck_collision'>
+            <pose>0 0 0.0442 0 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.088399999999999992</length>
+                <radius>0.047500000000000001</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='Neck_visual'>
+            <pose>0 0 0.0442 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.730769 0.730769 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Neck.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jC1Head_rotx' type='revolute'>
+          <pose relative_to='Neck'>0 0 0.08839999999999999 0 0 0</pose>
+          <parent>Neck</parent>
+          <child>Head_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.61086499999999999</lower>
+              <upper>0.61086499999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='Head_f1'>
+          <pose relative_to='jC1Head_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jC1Head_roty' type='revolute'>
+          <pose relative_to='Head_f1'>0 0 0 0 0 0</pose>
+          <parent>Head_f1</parent>
+          <child>Head</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.436332</lower>
+              <upper>0.17453299999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='Head'>
+          <pose relative_to='jC1Head_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0.1105 0 0 0</pose>
+            <mass>2.9220000000000002</mass>
+            <inertia>
+              <ixx>0.0142713402</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.0142713402</iyy>
+              <iyz>0</iyz>
+              <izz>0.0142713402</izz>
+            </inertia>
+          </inertial>
+          <collision name='Head_fixed_joint_lump__RightEyeCollision_collision'>
+            <pose>0.102 -0.03552 0.130642 0.09999999999999999 0 -1.8708</pose>
+            <geometry>
+              <mesh>
+                <scale>0.001 0.001 0.001</scale>
+                <uri>model://human_mesh_model/meshes/eye_segments/posterior_segment.stl</uri>
+              </mesh>
+            </geometry>
+          </collision>
+          <collision name='Head_fixed_joint_lump__LeftEyeCollision_collision_1'>
+            <pose>0.101 0.03552 0.130642 0.15 0 -1.308</pose>
+            <geometry>
+              <sphere>
+                <radius>0.0115</radius>
+              </sphere>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <collision name='HeadCollision_collision_2'>
+            <pose>0 0 0.1105 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>1.0303 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Head_with_sockets.stl</uri>
+              </mesh>
+            </geometry>
+          </collision>
+          <visual name='Head_visual'>
+            <pose>0 0 0.1105 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>1.0303 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/Head_with_sockets.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='Head_fixed_joint_lump__RightEyePosteriorSegment_visual_1'>
+            <pose>0.102 -0.03552 0.130642 0.09999999999999999 0 -1.8708</pose>
+            <geometry>
+              <mesh>
+                <scale>0.001 0.001 0.001</scale>
+                <uri>model://human_mesh_model/meshes/eye_segments/posterior_segment.dae</uri>
+              </mesh>
+            </geometry>
+          </visual>
+          <visual name='Head_fixed_joint_lump__LeftEyePosteriorSegment_visual_2'>
+            <pose>0.102 0.03552 0.130642 0.15 0 -1.1808</pose>
+            <geometry>
+              <mesh>
+                <scale>0.001 0.001 0.001</scale>
+                <uri>model://human_mesh_model/meshes/eye_segments/posterior_segment.dae</uri>
+              </mesh>
+            </geometry>
+          </visual>
+          <visual name='Head_fixed_joint_lump__LeftEyeAnteriorSegment_visual_3'>
+            <pose>0.101 0.03552 0.130642 0.15 0 -1.308</pose>
+            <geometry>
+              <mesh>
+                <scale>0.001 0.001 0.001</scale>
+                <uri>model://human_mesh_model/meshes/eye_segments/anterior_segment.dae</uri>
+              </mesh>
+            </geometry>
+          </visual>
+        </link>
+        <joint name='jLeftHip_rotx' type='revolute'>
+          <pose relative_to='Pelvis'>0 0.09984999999999999 -0.0663 0 0 0</pose>
+          <parent>Pelvis</parent>
+          <child>LeftUpperLeg_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.52359900000000004</lower>
+              <upper>0.78539800000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftUpperLeg_f1'>
+          <pose relative_to='jLeftHip_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftHip_roty' type='revolute'>
+          <pose relative_to='LeftUpperLeg_f1'>0 0 0 0 0 0</pose>
+          <parent>LeftUpperLeg_f1</parent>
+          <child>LeftUpperLeg_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-2.0943999999999998</lower>
+              <upper>0.261799</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftUpperLeg_f2'>
+          <pose relative_to='jLeftHip_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftHip_rotz' type='revolute'>
+          <pose relative_to='LeftUpperLeg_f2'>0 0 0 0 0 0</pose>
+          <parent>LeftUpperLeg_f2</parent>
+          <child>LeftUpperLeg</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.78539800000000004</lower>
+              <upper>0.78539800000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftUpperLeg'>
+          <pose relative_to='jLeftHip_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>-1.966748634768438e-08 3.048810234423657e-24 -0.2082500239864004 0 0 0</pose>
+            <mass>8.6820029999999981</mass>
+            <inertia>
+              <ixx>0.13398584961668239</ixx>
+              <ixy>1.4475655513737689e-24</ixy>
+              <ixz>-9.5280946965096152e-09</ixz>
+              <iyy>0.13398585836980409</iyy>
+              <iyz>2.7594738885621669e-24</iyz>
+              <izz>0.016957072028121641</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftUpperLeg_collision'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.41649999999999998</length>
+                <radius>0.0625</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftUpperLeg_visual'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.833333 0.833333 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftUpperLeg.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftUpperLeg_fixed_joint_lump__LeftRecFem_visual_1'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.833333 0.833333 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftRecFem.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftUpperLeg_fixed_joint_lump__LeftBicFem_visual_2'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.833333 0.833333 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftBicFem.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jLeftKnee_roty' type='revolute'>
+          <pose relative_to='LeftUpperLeg'>0 0 -0.4165 0 0 0</pose>
+          <parent>LeftUpperLeg</parent>
+          <child>LeftLowerLeg_f1</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>0</lower>
+              <upper>2.3561899999999998</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftLowerLeg_f1'>
+          <pose relative_to='jLeftKnee_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftKnee_rotz' type='revolute'>
+          <pose relative_to='LeftLowerLeg_f1'>0 0 0 0 0 0</pose>
+          <parent>LeftLowerLeg_f1</parent>
+          <child>LeftLowerLeg</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.52359900000000004</lower>
+              <upper>0.69813199999999997</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftLowerLeg'>
+          <pose relative_to='jLeftKnee_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>3.282272120052385e-08 1.641136060026192e-08 -0.2090997712256332 0 0 0</pose>
+            <mass>2.742003</mass>
+            <inertia>
+              <ixx>0.041350949033285733</ixx>
+              <ixy>1.4770224540235731e-15</ixy>
+              <ixz>-1.8818979410306989e-08</ixz>
+              <iyy>0.041350951058283528</iyy>
+              <iyz>-9.4094897051534931e-09</iyz>
+              <izz>0.010000036074996299</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftLowerLeg_collision'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.41820000000000002</length>
+                <radius>0.044999999999999998</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftLowerLeg_visual'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftLowerLeg.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftLowerLeg_fixed_joint_lump__LeftTibAnt_visual_1'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftTibAnt.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftLowerLeg_fixed_joint_lump__LeftGasMed_visual_2'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftGasMed.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftLowerLeg_fixed_joint_lump__LeftGasLat_visual_3'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftGasLat.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jLeftAnkle_rotx' type='revolute'>
+          <pose relative_to='LeftLowerLeg'>0 0 -0.4182 0 0 0</pose>
+          <parent>LeftLowerLeg</parent>
+          <child>LeftFoot_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.78539800000000004</lower>
+              <upper>0.61086499999999999</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftFoot_f1'>
+          <pose relative_to='jLeftAnkle_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftAnkle_roty' type='revolute'>
+          <pose relative_to='LeftFoot_f1'>0 0 0 0 0 0</pose>
+          <parent>LeftFoot_f1</parent>
+          <child>LeftFoot_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.52359900000000004</lower>
+              <upper>0.87266500000000002</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftFoot_f2'>
+          <pose relative_to='jLeftAnkle_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jLeftAnkle_rotz' type='revolute'>
+          <pose relative_to='LeftFoot_f2'>0 0 0 0 0 0</pose>
+          <parent>LeftFoot_f2</parent>
+          <child>LeftFoot</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.87266500000000002</lower>
+              <upper>0.436332</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftFoot'>
+          <pose relative_to='jLeftAnkle_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0.08419913244130306 -5.917474333350632e-08 -0.03315107381590388 0 0 0</pose>
+            <mass>0.79003299999999999</mass>
+            <inertia>
+              <ixx>0.010000120987796259</ixx>
+              <ixy>2.1037905583690809e-09</ixy>
+              <ixz>-4.3097814005944868e-08</ixz>
+              <iyy>0.010000176490321909</iyy>
+              <iyz>1.5498127008935069e-09</iyz>
+              <izz>0.01000009987364511</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftFoot_collision'>
+            <pose>0.08419999999999998 0 -0.03315 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.2584 0.0935 0.0663</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftFoot_visual'>
+            <pose>0.08419999999999998 0 -0.03315 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>1.0303 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftFoot.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='LeftFoot_fixed_joint_lump__LeftFTSensor_visual_1'>
+            <pose>0.037 0 -0.1213 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0 0 0</size>
+              </box>
+            </geometry>
+          </visual>
+        </link>
+        <joint name='jLeftBallFoot_roty' type='revolute'>
+          <pose relative_to='LeftFoot'>0.214692 0 -0.03315 0 0 0</pose>
+          <parent>LeftFoot</parent>
+          <child>LeftToe</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.17453299999999999</lower>
+              <upper>1.5708</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='LeftToe'>
+          <pose relative_to='jLeftBallFoot_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>0.0079799999999999992</mass>
+            <inertia>
+              <ixx>0.01</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.01</iyy>
+              <iyz>0</iyz>
+              <izz>0.01</izz>
+            </inertia>
+          </inertial>
+          <collision name='LeftToe_collision'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.002584 0.0935 0.0663</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='LeftToe_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>1.0303 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/LeftToe.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jRightHip_rotx' type='revolute'>
+          <pose relative_to='Pelvis'>0 -0.09984999999999999 -0.0663 0 0 0</pose>
+          <parent>Pelvis</parent>
+          <child>RightUpperLeg_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.78539800000000004</lower>
+              <upper>0.52359900000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightUpperLeg_f1'>
+          <pose relative_to='jRightHip_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightHip_roty' type='revolute'>
+          <pose relative_to='RightUpperLeg_f1'>0 0 0 0 0 0</pose>
+          <parent>RightUpperLeg_f1</parent>
+          <child>RightUpperLeg_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-2.0943999999999998</lower>
+              <upper>0.261799</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightUpperLeg_f2'>
+          <pose relative_to='jRightHip_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightHip_rotz' type='revolute'>
+          <pose relative_to='RightUpperLeg_f2'>0 0 0 0 0 0</pose>
+          <parent>RightUpperLeg_f2</parent>
+          <child>RightUpperLeg</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.78539800000000004</lower>
+              <upper>0.78539800000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightUpperLeg'>
+          <pose relative_to='jRightHip_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>-1.966748634768438e-08 3.048810234423657e-24 -0.2082500239864004 0 0 0</pose>
+            <mass>8.6820029999999981</mass>
+            <inertia>
+              <ixx>0.13398584961668239</ixx>
+              <ixy>1.4475655513737689e-24</ixy>
+              <ixz>-9.5280946965096218e-09</ixz>
+              <iyy>0.13398585836980409</iyy>
+              <iyz>2.7594738885621669e-24</iyz>
+              <izz>0.016957072028121641</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightUpperLeg_collision'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.41649999999999998</length>
+                <radius>0.0625</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightUpperLeg_visual'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.833333 0.833333 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightUpperLeg.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightUpperLeg_fixed_joint_lump__RightRecFem_visual_1'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.833333 0.833333 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightRecFem.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightUpperLeg_fixed_joint_lump__RightBicFem_visual_2'>
+            <pose>0 0 -0.20825 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.833333 0.833333 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightBicFem.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jRightKnee_roty' type='revolute'>
+          <pose relative_to='RightUpperLeg'>0 0 -0.4165 0 0 0</pose>
+          <parent>RightUpperLeg</parent>
+          <child>RightLowerLeg_f1</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>0</lower>
+              <upper>2.3561899999999998</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightLowerLeg_f1'>
+          <pose relative_to='jRightKnee_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightKnee_rotz' type='revolute'>
+          <pose relative_to='RightLowerLeg_f1'>0 0 0 0 0 0</pose>
+          <parent>RightLowerLeg_f1</parent>
+          <child>RightLowerLeg</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.69813199999999997</lower>
+              <upper>0.52359900000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightLowerLeg'>
+          <pose relative_to='jRightKnee_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>3.282272120052384e-08 -1.641136060026192e-08 -0.2090997712256332 0 0 0</pose>
+            <mass>2.742003</mass>
+            <inertia>
+              <ixx>0.041350949033285733</ixx>
+              <ixy>-1.477022453775582e-15</ixy>
+              <ixz>-1.8818979410306989e-08</ixz>
+              <iyy>0.041350951058283528</iyy>
+              <iyz>9.4094897051534931e-09</iyz>
+              <izz>0.010000036074996299</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightLowerLeg_collision'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <cylinder>
+                <length>0.41820000000000002</length>
+                <radius>0.044999999999999998</radius>
+              </cylinder>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightLowerLeg_visual'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightLowerLeg.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightLowerLeg_fixed_joint_lump__RightTibAnt_visual_1'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightTibAnt.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightLowerLeg_fixed_joint_lump__RightGasMed_visual_2'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightGasMed.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightLowerLeg_fixed_joint_lump__RightGasLat_visual_3'>
+            <pose>0 0 -0.2091 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>0.782609 0.782609 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightGasLat.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <joint name='jRightAnkle_rotx' type='revolute'>
+          <pose relative_to='RightLowerLeg'>0 0 -0.4182 0 0 0</pose>
+          <parent>RightLowerLeg</parent>
+          <child>RightFoot_f1</child>
+          <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+              <lower>-0.61086499999999999</lower>
+              <upper>0.78539800000000004</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightFoot_f1'>
+          <pose relative_to='jRightAnkle_rotx'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightAnkle_roty' type='revolute'>
+          <pose relative_to='RightFoot_f1'>0 0 0 0 0 0</pose>
+          <parent>RightFoot_f1</parent>
+          <child>RightFoot_f2</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.52359900000000004</lower>
+              <upper>0.87266500000000002</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightFoot_f2'>
+          <pose relative_to='jRightAnkle_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>1.0000000000000001e-05</mass>
+            <inertia>
+              <ixx>1e-08</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>1e-08</iyy>
+              <iyz>0</iyz>
+              <izz>1e-08</izz>
+            </inertia>
+          </inertial>
+        </link>
+        <joint name='jRightAnkle_rotz' type='revolute'>
+          <pose relative_to='RightFoot_f2'>0 0 0 0 0 0</pose>
+          <parent>RightFoot_f2</parent>
+          <child>RightFoot</child>
+          <axis>
+            <xyz>0 0 1</xyz>
+            <limit>
+              <lower>-0.436332</lower>
+              <upper>0.87266500000000002</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightFoot'>
+          <pose relative_to='jRightAnkle_rotz'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0.08419913244130306 5.917474333350632e-08 -0.03315107381590388 0 0 0</pose>
+            <mass>0.79003299999999999</mass>
+            <inertia>
+              <ixx>0.010000120987796259</ixx>
+              <ixy>-2.1037905583690809e-09</ixy>
+              <ixz>-4.3097814005944868e-08</ixz>
+              <iyy>0.010000176490321909</iyy>
+              <iyz>-1.5498127008935069e-09</iyz>
+              <izz>0.01000009987364511</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightFoot_collision'>
+            <pose>0.08419999999999998 0 -0.03315 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.2584 0.0935 0.0663</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightFoot_visual'>
+            <pose>0.08419999999999998 0 -0.03315 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>1.0303 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightFoot.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+          <visual name='RightFoot_fixed_joint_lump__RightFTSensor_visual_1'>
+            <pose>0.037 0 -0.1213 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0 0 0</size>
+              </box>
+            </geometry>
+          </visual>
+        </link>
+        <joint name='jRightBallFoot_roty' type='revolute'>
+          <pose relative_to='RightFoot'>0.214692 0 -0.03315 0 0 0</pose>
+          <parent>RightFoot</parent>
+          <child>RightToe</child>
+          <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+              <lower>-0.17453299999999999</lower>
+              <upper>1.5708</upper>
+              <effort>30</effort>
+              <velocity>1</velocity>
+            </limit>
+            <dynamics>
+              <damping>0.10000000000000001</damping>
+              <friction>0</friction>
+              <spring_reference>0</spring_reference>
+              <spring_stiffness>0</spring_stiffness>
+            </dynamics>
+          </axis>
+        </joint>
+        <link name='RightToe'>
+          <pose relative_to='jRightBallFoot_roty'>0 0 0 0 0 0</pose>
+          <inertial>
+            <pose>0 0 0 0 0 0</pose>
+            <mass>0.0079799999999999992</mass>
+            <inertia>
+              <ixx>0.01</ixx>
+              <ixy>0</ixy>
+              <ixz>0</ixz>
+              <iyy>0.01</iyy>
+              <iyz>0</iyz>
+              <izz>0.01</izz>
+            </inertia>
+          </inertial>
+          <collision name='RightToe_collision'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <box>
+                <size>0.002584 0.0935 0.0663</size>
+              </box>
+            </geometry>
+            <surface>
+              <friction>
+                <ode/>
+              </friction>
+              <bounce/>
+              <contact/>
+            </surface>
+          </collision>
+          <visual name='RightToe_visual'>
+            <pose>0 0 0 0 0 0</pose>
+            <geometry>
+              <mesh>
+                <scale>1.0303 1.0303 1.0303</scale>
+                <uri>model://human_mesh_model/meshes/RightToe.stl</uri>
+              </mesh>
+            </geometry>
+            <material>
+              <diffuse>1 1 0.99025 1</diffuse>
+              <ambient>1 1 0.99025 1</ambient>
+            </material>
+          </visual>
+        </link>
+        <frame name='jLeftErSpin_LP' attached_to='Pelvis'>
+          <pose>-0.0875 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='ErSpin_LP' attached_to='jLeftErSpin_LP'/>
+        <frame name='jLeftRecAbd_LP' attached_to='Pelvis'>
+          <pose>0 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='RecAbd_LP' attached_to='jLeftRecAbd_LP'/>
+        <frame name='jLeftRecFem_LP' attached_to='Pelvis'>
+          <pose>0.0875 0.108233 -0.0663 0 -0 0</pose>
+        </frame>
+        <frame name='RecFem_LLT' attached_to='jLeftRecFem_LP'/>
+        <frame name='jRightErSpin_RP' attached_to='Pelvis'>
+          <pose>-0.0875 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='ErSpin_RP' attached_to='jRightErSpin_RP'/>
+        <frame name='jRightRecAbd_RP' attached_to='Pelvis'>
+          <pose>0.0875 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='RecAbd_RP' attached_to='jRightRecAbd_RP'/>
+        <frame name='jRightRecFem_RP' attached_to='Pelvis'>
+          <pose>0.0875 -0.108233 -0.0663 0 -0 0</pose>
+        </frame>
+        <frame name='RecFem_RLT' attached_to='jRightRecFem_RP'/>
+        <frame name='jLeftErSpin_LUT' attached_to='UpperTrunk'>
+          <pose>-0.0875 0.073383 0.187 0 -0 0</pose>
+        </frame>
+        <frame name='ErSpin_LUT' attached_to='jLeftErSpin_LUT'/>
+        <frame name='jLeftRecAbd_LUT' attached_to='UpperTrunk'>
+          <pose>0.0875 0.073383 0 0 -0 0</pose>
+        </frame>
+        <frame name='RecAbd_LUT' attached_to='jLeftRecAbd_LUT'/>
+        <frame name='jRightErSpin_RUT' attached_to='UpperTrunk'>
+          <pose>-0.0875 -0.073383 0.187 0 -0 0</pose>
+        </frame>
+        <frame name='ErSpin_RUT' attached_to='jRightErSpin_RUT'/>
+        <frame name='jRightRecAbd_RUT' attached_to='UpperTrunk'>
+          <pose>0.0875 -0.073383 0 0 -0 0</pose>
+        </frame>
+        <frame name='RecAbd_RUT' attached_to='jRightRecAbd_RUT'/>
+        <frame name='jLeftBicBrac_LUA' attached_to='LeftUpperArm'>
+          <pose>0 0 0.029 0 -0 0</pose>
+        </frame>
+        <frame name='BicBrac_LUA' attached_to='jLeftBicBrac_LUA'/>
+        <frame name='jLeftTricBrac_LUA' attached_to='LeftUpperArm'>
+          <pose>0.029 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='TricBrac_LUA' attached_to='jLeftTricBrac_LUA'/>
+        <frame name='jLeftBicBrac_LFA' attached_to='LeftForeArm'>
+          <pose>0.0275 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='BicBrac_LFA' attached_to='jLeftBicBrac_LFA'/>
+        <frame name='jLeftExtCarp_LFA' attached_to='LeftForeArm'>
+          <pose>-0.0275 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='ExtCarp_LFA' attached_to='jLeftExtCarp_LFA'/>
+        <frame name='jLeftFlexCarp_LFA' attached_to='LeftForeArm'>
+          <pose>-0.0275 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='FlexCarp_LFA' attached_to='jLeftFlexCarp_LFA'/>
+        <frame name='jLeftTricBrac_LFA' attached_to='LeftForeArm'>
+          <pose>0.0275 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='TricBrac_LFA' attached_to='jLeftTricBrac_LFA'/>
+        <frame name='jLeftExtCarp_LH' attached_to='LeftHand'>
+          <pose>0.0144 0.0918 -0.025 0 -0 0</pose>
+        </frame>
+        <frame name='ExtCarp_LH' attached_to='jLeftExtCarp_LH'/>
+        <frame name='jLeftFlexCarp_LH' attached_to='LeftHand'>
+          <pose>0.0144 0.0918 0.0125 0 -0 0</pose>
+        </frame>
+        <frame name='FlexCarp_LH' attached_to='jLeftFlexCarp_LH'/>
+        <frame name='jLeftHandCOM' attached_to='LeftHand'>
+          <pose>0 0.0918 0 0 -0 0</pose>
+        </frame>
+        <frame name='LeftHandCOM' attached_to='jLeftHandCOM'/>
+        <frame name='jRightBicBrac_RUA' attached_to='RightUpperArm'>
+          <pose>-0 0 0.029 0 -0 0</pose>
+        </frame>
+        <frame name='BicBrac_RUA' attached_to='jRightBicBrac_RUA'/>
+        <frame name='jRightTricBrac_RUA' attached_to='RightUpperArm'>
+          <pose>-0.029 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='TricBrac_RUA' attached_to='jRightTricBrac_RUA'/>
+        <frame name='jRightBicBrac_RFA' attached_to='RightForeArm'>
+          <pose>0.0275 0 0.0275 0 -0 0</pose>
+        </frame>
+        <frame name='BicBrac_RFA' attached_to='jRightBicBrac_RFA'/>
+        <frame name='jRightExtCarp_RFA' attached_to='RightForeArm'>
+          <pose>0.0275 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='ExtCarp_RFA' attached_to='jRightExtCarp_RFA'/>
+        <frame name='jRightFlexCarp_RFA' attached_to='RightForeArm'>
+          <pose>-0.0275 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='FlexCarp_RFA' attached_to='jRightFlexCarp_RFA'/>
+        <frame name='jRightTricBrac_RFA' attached_to='RightForeArm'>
+          <pose>0.0275 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='TricBrac_RFA' attached_to='jRightTricBrac_RFA'/>
+        <frame name='jRightExtCarp_RH' attached_to='RightHand'>
+          <pose>0.0144 -0.0918 -0.0125 0 -0 0</pose>
+        </frame>
+        <frame name='ExtCarp_RH' attached_to='jRightExtCarp_RH'/>
+        <frame name='jRightFlexCarp_RH' attached_to='RightHand'>
+          <pose>0.0144 -0.0918 0.0125 0 -0 0</pose>
+        </frame>
+        <frame name='FlexCarp_RH' attached_to='jRightFlexCarp_RH'/>
+        <frame name='jRightHandCOM' attached_to='RightHand'>
+          <pose>0 -0.0918 0 0 -0 0</pose>
+        </frame>
+        <frame name='RightHandCOM' attached_to='jRightHandCOM'/>
+        <frame name='jLeftBicFem_LUL' attached_to='LeftUpperLeg'>
+          <pose>-0.0625 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='BicFem_LUL' attached_to='jLeftBicFem_LUL'/>
+        <frame name='jLeftGasLat_LUL' attached_to='LeftUpperLeg'>
+          <pose>-0.054127 0.0225 -0.4165 0 -0 0</pose>
+        </frame>
+        <frame name='GasLat_LUL' attached_to='jLeftGasLat_LUL'/>
+        <frame name='jLeftGasMed_LUL' attached_to='LeftUpperLeg'>
+          <pose>-0.054127 -0.0225 -0.4165 0 -0 0</pose>
+        </frame>
+        <frame name='GasMed_LUL' attached_to='jLeftGasMed_LUL'/>
+        <frame name='jLeftBicFem_LLL' attached_to='LeftLowerLeg'>
+          <pose>0 0.045 0 0 -0 0</pose>
+        </frame>
+        <frame name='BicFem_LLL' attached_to='jLeftBicFem_LLL'/>
+        <frame name='jLeftRecFem_LLL' attached_to='LeftLowerLeg'>
+          <pose>0.045 -0 0 0 -0 0</pose>
+        </frame>
+        <frame name='RecFem_LLL' attached_to='jLeftRecFem_LLL'/>
+        <frame name='jLeftTibAnt_LLL' attached_to='LeftLowerLeg'>
+          <pose>0.045 -0 0 0 -0 0</pose>
+        </frame>
+        <frame name='TibAnt_LLL' attached_to='jLeftTibAnt_LLL'/>
+        <frame name='jLeftBirken_roty' attached_to='LeftFoot'>
+          <pose>0.037 0 -0.1213 0 -0 0</pose>
+        </frame>
+        <frame name='LeftFTSensor' attached_to='jLeftBirken_roty'/>
+        <frame name='jLeftGasLat_LF' attached_to='LeftFoot'>
+          <pose>-0.045 0 -0.03315 0 -0 0</pose>
+        </frame>
+        <frame name='GasLat_LF' attached_to='jLeftGasLat_LF'/>
+        <frame name='jLeftGasMed_LF' attached_to='LeftFoot'>
+          <pose>-0.045 0 -0.03315 0 -0 0</pose>
+        </frame>
+        <frame name='GasMed_LF' attached_to='jLeftGasMed_LF'/>
+        <frame name='jLeftTibAnt_LF' attached_to='LeftFoot'>
+          <pose>0.1292 -0.04675 0 0 -0 0</pose>
+        </frame>
+        <frame name='TibAnt_LF' attached_to='jLeftTibAnt_LF'/>
+        <frame name='jRightBicFem_RUL' attached_to='RightUpperLeg'>
+          <pose>-0.0625 0 0 0 -0 0</pose>
+        </frame>
+        <frame name='BicFem_RUL' attached_to='jRightBicFem_RUL'/>
+        <frame name='jRightGasLat_RUL' attached_to='RightUpperLeg'>
+          <pose>-0.054127 -0.0225 -0.4165 0 -0 0</pose>
+        </frame>
+        <frame name='GasLat_RUL' attached_to='jRightGasLat_RUL'/>
+        <frame name='jRightGasMed_RUL' attached_to='RightUpperLeg'>
+          <pose>-0.054127 0.0225 -0.4165 0 -0 0</pose>
+        </frame>
+        <frame name='GasMed_RUL' attached_to='jRightGasMed_RUL'/>
+        <frame name='jRightBicFem_RLL' attached_to='RightLowerLeg'>
+          <pose>0 -0.045 0 0 -0 0</pose>
+        </frame>
+        <frame name='BicFem_RLL' attached_to='jRightBicFem_RLL'/>
+        <frame name='jRightRecFem_RLL' attached_to='RightLowerLeg'>
+          <pose>0.045 -0 0 0 -0 0</pose>
+        </frame>
+        <frame name='RecFem_RLL' attached_to='jRightRecFem_RLL'/>
+        <frame name='jRightTibAnt_RLL' attached_to='RightLowerLeg'>
+          <pose>0.045 -0 0 0 -0 0</pose>
+        </frame>
+        <frame name='TibAnt_RLL' attached_to='jRightTibAnt_RLL'/>
+        <frame name='jRightBirken_roty' attached_to='RightFoot'>
+          <pose>0.037 0 -0.1213 0 -0 0</pose>
+        </frame>
+        <frame name='RightFTSensor' attached_to='jRightBirken_roty'/>
+        <frame name='jRightGasLat_RF' attached_to='RightFoot'>
+          <pose>-0.045 0 -0.03315 0 -0 0</pose>
+        </frame>
+        <frame name='GasLat_RF' attached_to='jRightGasLat_RF'/>
+        <frame name='jRightGasMed_RF' attached_to='RightFoot'>
+          <pose>-0.045 0 -0.03315 0 -0 0</pose>
+        </frame>
+        <frame name='GasMed_RF' attached_to='jRightGasMed_RF'/>
+        <frame name='jRightTibAnt_RF' attached_to='RightFoot'>
+          <pose>0.1292 0.04675 0 0 -0 0</pose>
+        </frame>
+        <frame name='TibAnt_RF' attached_to='jRightTibAnt_RF'/>
+      </model>
+      <pose>0.803256 0.484056 0.79 0 -1.57079 0</pose>
+      <self_collide>false</self_collide>
+    </model>
+    <light name='sun' type='directional'>
+      <pose>0 0 10 0 -0 0</pose>
+      <cast_shadows>true</cast_shadows>
+      <intensity>1</intensity>
+      <direction>-0.5 0.1 -0.9</direction>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <linear>0.01</linear>
+        <constant>0.90000000000000002</constant>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <spot>
+        <inner_angle>0</inner_angle>
+        <outer_angle>0</outer_angle>
+        <falloff>0</falloff>
+      </spot>
+    </light>
+  </world>
+</sdf>
