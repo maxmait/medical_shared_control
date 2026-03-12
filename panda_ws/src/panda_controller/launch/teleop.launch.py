@@ -1,6 +1,6 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import os
@@ -128,6 +128,12 @@ def generate_launch_description():
         description='Angular velocity scale for teleoperation'
     )
 
+    disable_safety_arg = DeclareLaunchArgument(
+        'disable_safety',
+        default_value='false',
+        description='Disable safety bridge and remapping'
+    )
+
     # --- Auto-detect devices ---
     joystick_device = find_joystick()
     haptic_device = find_haptic_controller()
@@ -146,7 +152,7 @@ def generate_launch_description():
     )
 
     # Teleoperation input node - converts joystick to velocity commands
-    tele_controller = Node(
+    tele_controller_safety = Node(
         package='panda_controller',
         executable='tele_controller_input',
         name='tele_controller_input',
@@ -154,6 +160,30 @@ def generate_launch_description():
             {'linear_scale': LaunchConfiguration('linear_scale')},
             {'angular_scale': LaunchConfiguration('angular_scale')}
         ],
+        remappings=[
+            ('/panda_velocity_cmd', '/panda_velocity_cmd_user')
+        ],
+        condition=UnlessCondition(LaunchConfiguration('disable_safety')),
+        output='screen'
+    )
+
+    tele_controller_direct = Node(
+        package='panda_controller',
+        executable='tele_controller_input',
+        name='tele_controller_input',
+        parameters=[
+            {'linear_scale': LaunchConfiguration('linear_scale')},
+            {'angular_scale': LaunchConfiguration('angular_scale')}
+        ],
+        condition=IfCondition(LaunchConfiguration('disable_safety')),
+        output='screen'
+    )
+
+    shared_control_bridge = Node(
+        package='panda_controller',
+        executable='shared_control_bridge',
+        name='shared_control_bridge',
+        condition=UnlessCondition(LaunchConfiguration('disable_safety')),
         output='screen'
     )
 
@@ -182,10 +212,13 @@ def generate_launch_description():
         enable_status_feedback_arg,
         linear_scale_arg,
         angular_scale_arg,
+        disable_safety_arg,
         # Nodes
         joy_node,
-        tele_controller,
+        tele_controller_safety,
+        tele_controller_direct,
+        shared_control_bridge,
         haptic_feedback
     ])
 #Argument example:
-#ros2 launch panda_controller teleop.launch.py enable_haptic:=true enable_force_feedback:=true linear_scale:=0.1
+#ros2 launch panda_controller teleop.launch.py enable_haptic:=true enable_force_feedback:=true disable_safety:=true linear_scale:=0.1
