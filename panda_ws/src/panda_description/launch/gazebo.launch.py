@@ -108,3 +108,5 @@ def generate_launch_description():
     ])
 
     #ros2 launch panda_description gazebo.launch.py world_file:=medical_procedure.sdf
+    #To run with NVIDIA GPU offloading (if available):
+    # __NV_PRIME_RENDER_OFFLOAD=1 __GLX_VENDOR_LIBRARY_NAME=nvidia __VK_LAYER_NV_optimus=NVIDIA_only ros2 launch panda_description gazebo.launch.py world_file:=procedure.sdf
