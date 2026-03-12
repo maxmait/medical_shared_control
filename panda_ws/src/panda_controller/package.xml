@@ -18,6 +18,7 @@
   <depend>kdl_parser</depend>
   <depend>orocos_kdl</depend>
   <depend>urdf</depend>
+  <depend>safety_controller</depend>
   
   <exec_depend>ros2launch</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>

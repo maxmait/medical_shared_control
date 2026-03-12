@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>safety_controller</name>
+  <version>0.0.0</version>
+  <description>Safety controller shared memory library</description>
+
+  <maintainer email="maxmai98@gmail.com">Your Name</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

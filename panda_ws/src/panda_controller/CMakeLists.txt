@@ -34,6 +34,7 @@ find_package(urdf REQUIRED)
 find_package(rcl_interfaces REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(safety_controller REQUIRED)
 
 add_executable(panda_velocity_controller src/panda_velocity_controller.cpp)
 ament_target_dependencies(panda_velocity_controller
@@ -56,10 +57,19 @@ ament_target_dependencies(tele_controller_input
   tf2_geometry_msgs
 )
 
+add_executable(shared_control_bridge src/shared_control_bridge.cpp)
+ament_target_dependencies(shared_control_bridge
+  rclcpp
+  sensor_msgs
+  geometry_msgs
+  safety_controller
+)
+
 
 install(TARGETS
   panda_velocity_controller
   tele_controller_input
+  shared_control_bridge
   DESTINATION lib/${PROJECT_NAME}
 )
 
