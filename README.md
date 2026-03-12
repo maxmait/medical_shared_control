@@ -4,7 +4,8 @@ This project implements a safety-critical shared-control module in modern C++
 for simulated surgical robotics, using a Franka Emika Panda robot in ROS2/Gazebo.
 
 Structure:
-- core/: standalone C++ safety & control library (ROS-independent)
+- panda_ws/src/safety_controller/: ROS-independent C++ RT safety core
+- panda_ws/src/panda_controller/: ROS2 bridge + teleop + controllers
 - panda_ws/: ROS2 workspace for simulation and integration
 
 Goal:
@@ -16,6 +17,29 @@ A single-beam LiDAR mounted at the tool tip measures the line-of-sight distance
 to tissue surfaces. The range reading is used as a real-time proxy for tool-to-
 tissue separation and feeds the safety constraint logic that limits motion as
 the tool approaches the tissue.
+
+Real-time safety control (RT core):
+- The safety controller runs in a dedicated C++ thread at 1 kHz.
+- The RT loop avoids dynamic memory allocation and never waits on ROS.
+- ROS nodes only exchange data via a lock-free latest-value buffer.
+- The RT core outputs a safe velocity command based on LiDAR distance.
+
+## Architecture
+
+```mermaid
+flowchart TD
+	A[Gazebo sensors] --> B[ROS2 topics]
+	B --> C[shared_control_bridge]
+	C --> D[Lock-free latest-value buffer]
+	D --> E[RT core 1 kHz]
+	E --> D
+	C --> F["/panda_velocity_cmd"]
+	F --> G[ros2_control velocity controller]
+```
+
+Safety bridge topic mapping:
+- Inputs: `/probe/scan`, `/panda_velocity_cmd_user`, `/joint_states`
+- Output: `/panda_velocity_cmd`
 
 ## Quick Start Commands
 
@@ -31,12 +55,15 @@ ros2 launch panda_controller enable_velocity_control.launch.py
 # Terminal 3: RViz camera feed
 ros2 launch panda_description rviz_camera.launch.py
 
-# Terminal 4: Teleop with haptic controller
+# Terminal 4: Teleop with haptic controller + safety bridge
 ros2 launch panda_controller teleop.launch.py
 ```
 
 This launches the simulation, the camera feed, and teleop so you can control
 robot velocity with a haptic controller.
+
+Safety control is enabled by default. Teleop publishes to a user command topic,
+and the safety bridge generates the final velocity command.
 
 ![Robot control demo](readme_assets/robot_demo_2.gif)
 
@@ -57,8 +84,11 @@ ros2 launch panda_controller spawn_controllers.launch.py
 # Terminal 4: Enable velocity control
 ros2 launch panda_controller enable_velocity_control.launch.py
 
-# Terminal 5: Test velocity control
-ros2 run panda_controller velocity_test.py
+# Terminal 5: Start safety bridge (RT core)
+ros2 run panda_controller shared_control_bridge
+
+# Terminal 6: Teleop (safe by default)
+ros2 launch panda_controller teleop.launch.py
 ```
 
 ### Method 2: Manual Controller Switching (For Debugging)
@@ -81,8 +111,14 @@ ros2 control list_hardware_interfaces
 # Start velocity controller node
 ros2 run panda_controller panda_velocity_controller
 
-# Test with manual commands
+# Start safety bridge (RT core)
+ros2 run panda_controller shared_control_bridge
+
+# Test with manual commands (bypass safety)
 ros2 topic pub /panda_velocity_cmd geometry_msgs/msg/Twist '{linear: {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}' --rate 10
+
+# Test with manual commands (through safety)
+ros2 topic pub /panda_velocity_cmd_user geometry_msgs/msg/Twist '{linear: {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}' --rate 10
 
 # Stop robot
 ros2 topic pub /panda_velocity_cmd geometry_msgs/msg/Twist '{linear: {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 0.0}}' --once
@@ -105,6 +141,9 @@ ros2 topic echo /joint_states
 
 # Check velocity commands being received
 ros2 topic echo /panda_velocity_cmd
+
+# Check user velocity commands (before safety)
+ros2 topic echo /panda_velocity_cmd_user
 
 # List all available controllers
 ros2 control list_controller_types
@@ -146,22 +185,35 @@ source install/setup.bash        # Source new build
 ### Quick Test Commands
 
 ```bash
-# Send different velocity commands for testing:
+# Send different velocity commands for testing (through safety):
 
 # Move forward in X
-ros2 topic pub /panda_velocity_cmd geometry_msgs/msg/Twist '{linear: {x: 0.1, y: 0.0, z: 0.0}}' --rate 10
+ros2 topic pub /panda_velocity_cmd_user geometry_msgs/msg/Twist '{linear: {x: 0.1, y: 0.0, z: 0.0}}' --rate 10
 
 # Move up in Z  
-ros2 topic pub /panda_velocity_cmd geometry_msgs/msg/Twist '{linear: {x: 0.0, y: 0.0, z: 0.1}}' --rate 10
+ros2 topic pub /panda_velocity_cmd_user geometry_msgs/msg/Twist '{linear: {x: 0.0, y: 0.0, z: 0.1}}' --rate 10
 
 # Rotate around Z axis
-ros2 topic pub /panda_velocity_cmd geometry_msgs/msg/Twist '{angular: {x: 0.0, y: 0.0, z: 0.2}}' --rate 10
+ros2 topic pub /panda_velocity_cmd_user geometry_msgs/msg/Twist '{angular: {x: 0.0, y: 0.0, z: 0.2}}' --rate 10
 
 # Stop all motion
-ros2 topic pub /panda_velocity_cmd geometry_msgs/msg/Twist '{}' --once
+ros2 topic pub /panda_velocity_cmd_user geometry_msgs/msg/Twist '{}' --once
 
 # Run comprehensive test sequence
 ros2 run panda_controller velocity_test.py
+```
+
+### Safety Control Notes
+
+- RT core runs at 1 kHz in a dedicated C++ thread.
+- The RT loop is allocation-free and only accesses shared state.
+- ROS nodes never block the RT loop; they only update shared inputs.
+- Safety is enabled by default in teleop.
+- Disable safety for direct control:
+
+```bash
+ros2 launch panda_controller teleop.launch.py disable_safety:=true
+```
 ```
 
 ---
