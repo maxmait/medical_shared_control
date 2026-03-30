@@ -32,8 +32,10 @@ find_package(kdl_parser REQUIRED)
 find_package(orocos_kdl REQUIRED)
 find_package(urdf REQUIRED)
 find_package(rcl_interfaces REQUIRED)
+find_package(controller_manager_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
+find_package(tf2_ros REQUIRED)
 find_package(safety_controller REQUIRED)
 
 add_executable(panda_velocity_controller src/panda_velocity_controller.cpp)
@@ -53,8 +55,11 @@ ament_target_dependencies(tele_controller_input
   rclcpp
   sensor_msgs
   geometry_msgs
+  controller_manager_msgs
   tf2
   tf2_geometry_msgs
+  tf2_ros
+  trajectory_msgs
 )
 
 add_executable(shared_control_bridge src/shared_control_bridge.cpp)
@@ -62,6 +67,9 @@ ament_target_dependencies(shared_control_bridge
   rclcpp
   sensor_msgs
   geometry_msgs
+  tf2
+  tf2_geometry_msgs
+  tf2_ros
   safety_controller
 )
 
