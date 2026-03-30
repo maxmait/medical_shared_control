@@ -5,27 +5,44 @@
 
 #include <array>
 #include <cmath>
+#include <memory>
 #include <string>
+
+#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Vector3.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.hpp>
+#include <tf2_ros/buffer.h>
+#include <tf2_ros/transform_listener.h>
 
 #include "shared_memory.hpp"
 #include "shared_control_rt.hpp"
 
 class SharedControlBridge : public rclcpp::Node {
 public:
-	SharedControlBridge()
-		: Node("shared_control_bridge"),
-		  rt_(shared_, 1000.0) {
+		SharedControlBridge()
+				: Node("shared_control_bridge"),
+					rt_(shared_, 1000.0),
+					tf_buffer_(this->get_clock()) {
 		declare_parameter<std::string>("lidar_topic", "/probe/scan");
 		declare_parameter<std::string>("user_cmd_topic", "/panda_velocity_cmd_user");
 		declare_parameter<std::string>("joint_state_topic", "/joint_states");
 		declare_parameter<std::string>("output_cmd_topic", "/panda_velocity_cmd");
 		declare_parameter<double>("publish_rate", 100.0);
+		declare_parameter<std::string>("base_frame", "panda_link0");
+		declare_parameter<std::string>("lidar_frame", "panda_lidar_frame");
+		declare_parameter<std::string>("lidar_axis", "x");
 
 		const auto lidar_topic = get_parameter("lidar_topic").as_string();
 		const auto user_cmd_topic = get_parameter("user_cmd_topic").as_string();
 		const auto joint_state_topic = get_parameter("joint_state_topic").as_string();
 		const auto output_cmd_topic = get_parameter("output_cmd_topic").as_string();
 		const double publish_rate = get_parameter("publish_rate").as_double();
+		base_frame_ = get_parameter("base_frame").as_string();
+		lidar_frame_ = get_parameter("lidar_frame").as_string();
+		lidar_axis_ = axisFromString(get_parameter("lidar_axis").as_string());
+
+		tf_listener_ = std::make_unique<tf2_ros::TransformListener>(tf_buffer_);
 
 		lidar_sub_ = create_subscription<sensor_msgs::msg::LaserScan>(
 			lidar_topic, rclcpp::SensorDataQoS(),
@@ -88,6 +105,11 @@ private:
 		}
 
 		input_cache_.lidar_range = selected_range;
+		updateLidarDirection();
+		input_cache_.has_lidar_dir = has_lidar_dir_;
+		input_cache_.lidar_dir_base[0] = lidar_dir_base_[0];
+		input_cache_.lidar_dir_base[1] = lidar_dir_base_[1];
+		input_cache_.lidar_dir_base[2] = lidar_dir_base_[2];
 		shared_.inputs.write(input_cache_);
 	}
 
@@ -136,6 +158,52 @@ private:
 		output_pub_->publish(output_msg_);
 	}
 
+	tf2::Vector3 axisFromString(const std::string& axis) const {
+		if (axis == "x") {
+			return tf2::Vector3(1.0, 0.0, 0.0);
+		}
+		if (axis == "-x") {
+			return tf2::Vector3(-1.0, 0.0, 0.0);
+		}
+		if (axis == "y") {
+			return tf2::Vector3(0.0, 1.0, 0.0);
+		}
+		if (axis == "-y") {
+			return tf2::Vector3(0.0, -1.0, 0.0);
+		}
+		if (axis == "-z") {
+			return tf2::Vector3(0.0, 0.0, -1.0);
+		}
+		return tf2::Vector3(0.0, 0.0, 1.0);
+	}
+
+	void updateLidarDirection() {
+		try {
+			const auto tf = tf_buffer_.lookupTransform(
+				base_frame_, lidar_frame_, tf2::TimePointZero);
+
+			tf2::Quaternion q;
+			tf2::fromMsg(tf.transform.rotation, q);
+			tf2::Matrix3x3 rotation(q);
+
+			tf2::Vector3 axis_base = rotation * lidar_axis_;
+			if (axis_base.length2() > 1e-12) {
+				axis_base.normalize();
+			}
+
+			lidar_dir_base_[0] = axis_base.x();
+			lidar_dir_base_[1] = axis_base.y();
+			lidar_dir_base_[2] = axis_base.z();
+			has_lidar_dir_ = true;
+		} catch (const tf2::TransformException& ex) {
+			RCLCPP_WARN_THROTTLE(
+				get_logger(), *get_clock(), 2000,
+				"TF lookup failed (%s -> %s): %s",
+				base_frame_.c_str(), lidar_frame_.c_str(), ex.what());
+			has_lidar_dir_ = false;
+		}
+	}
+
 	safety_controller::SharedMemory shared_;
 	safety_controller::SharedControlRt rt_;
 	safety_controller::InputState input_cache_{};
@@ -147,6 +215,14 @@ private:
 	rclcpp::TimerBase::SharedPtr output_timer_;
 
 	geometry_msgs::msg::Twist output_msg_{};
+
+	tf2_ros::Buffer tf_buffer_;
+	std::unique_ptr<tf2_ros::TransformListener> tf_listener_;
+	std::string base_frame_;
+	std::string lidar_frame_;
+	tf2::Vector3 lidar_axis_{0.0, 0.0, 1.0};
+	double lidar_dir_base_[3] = {0.0, 0.0, 1.0};
+	bool has_lidar_dir_ = false;
 };
 
 int main(int argc, char** argv) {

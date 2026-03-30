@@ -7,10 +7,12 @@ namespace safety_controller {
 
 struct InputState {
 	double lidar_range = 0.0;
+	double lidar_dir_base[3] = {0.0, 0.0, 1.0};
 	double cmd_linear[3] = {0.0, 0.0, 0.0};
 	double cmd_angular[3] = {0.0, 0.0, 0.0};
 	double joint_pos[7] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 	bool has_joint_state = false;
+	bool has_lidar_dir = false;
 };
 
 struct OutputState {

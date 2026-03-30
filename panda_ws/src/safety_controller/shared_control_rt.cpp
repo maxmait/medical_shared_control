@@ -28,6 +28,7 @@ OutputState compute_safe_command(const InputState& in) {
 	const double release_margin = 0.005;
 	const double min_scale = 0.02;
 	const double filter_alpha = 0.2;
+	const double lateral_weight = 0.3;
 
 	static bool range_initialized = false;
 	static double filtered_range = 0.0;
@@ -60,8 +61,47 @@ OutputState compute_safe_command(const InputState& in) {
 		scale = min_scale;
 	}
 
+	const double base_scale = scale;
+	const double mild_scale = 1.0 - (lateral_weight * (1.0 - base_scale));
+
+	if (in.has_lidar_dir) {
+		double dir_x = in.lidar_dir_base[0];
+		double dir_y = in.lidar_dir_base[1];
+		double dir_z = in.lidar_dir_base[2];
+		const double dir_norm = std::sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
+		if (dir_norm > 1e-9) {
+			dir_x /= dir_norm;
+			dir_y /= dir_norm;
+			dir_z /= dir_norm;
+		}
+
+		const double vx = in.cmd_linear[0];
+		const double vy = in.cmd_linear[1];
+		const double vz = in.cmd_linear[2];
+		const double v_parallel = (vx * dir_x) + (vy * dir_y) + (vz * dir_z);
+
+		const double v_perp_x = vx - (v_parallel * dir_x);
+		const double v_perp_y = vy - (v_parallel * dir_y);
+		const double v_perp_z = vz - (v_parallel * dir_z);
+
+		const double v_perp_scaled_x = v_perp_x * mild_scale;
+		const double v_perp_scaled_y = v_perp_y * mild_scale;
+		const double v_perp_scaled_z = v_perp_z * mild_scale;
+
+		const double v_parallel_scaled = (v_parallel > 0.0)
+			? (v_parallel * base_scale)
+			: (v_parallel * mild_scale);
+
+		out.safe_cmd_linear[0] = v_perp_scaled_x + (v_parallel_scaled * dir_x);
+		out.safe_cmd_linear[1] = v_perp_scaled_y + (v_parallel_scaled * dir_y);
+		out.safe_cmd_linear[2] = v_perp_scaled_z + (v_parallel_scaled * dir_z);
+	} else {
+		for (int i = 0; i < 3; ++i) {
+			out.safe_cmd_linear[i] = in.cmd_linear[i] * base_scale;
+		}
+	}
+
 	for (int i = 0; i < 3; ++i) {
-		out.safe_cmd_linear[i] = in.cmd_linear[i] * scale;
 		out.safe_cmd_angular[i] = in.cmd_angular[i] * scale;
 	}
 
