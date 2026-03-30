@@ -1,2 +1,4 @@
 -The teleoperation is only using the last joint as inverse kinematic. We need to make it use the whole inverse kinematic
 -create a function, which tries to reconnect to controller through a service call.
+- Make a function, which will recreate the eyeball, by moving the robot perpendicular to the eye and recreate the curvature, so we are able to 
+follow the distance with the robot as.
