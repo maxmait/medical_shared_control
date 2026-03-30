@@ -41,6 +41,19 @@ Safety bridge topic mapping:
 - Inputs: `/probe/scan`, `/panda_velocity_cmd_user`, `/joint_states`
 - Output: `/panda_velocity_cmd`
 
+Safety scaling behavior:
+- The RT core scales motion toward the LiDAR beam direction more aggressively.
+- Lateral motion is mildly slowed near obstacles for stability.
+- Motion away from the obstacle is allowed with minimal slowdown.
+
+Direction-aware slowdown:
+The LiDAR beam defines a unit direction in the base frame. The controller
+projects the commanded linear velocity onto this direction. Only the component
+that moves toward the obstacle (positive projection) receives the strong
+distance-based slowdown. Components that move away or laterally are kept at
+full or mildly reduced speed. This prevents unnecessary slowdown when the
+tool is retreating or sliding parallel to tissue.
+
 ## Quick Start Commands
 
 ### Demo Launch (Gazebo + RViz camera + teleop)
@@ -160,6 +173,13 @@ ros2 service list | grep controller_manager
 3. Make sure `arm_controller` shows as `active`
 4. Try manual step-by-step switching
 
+**If LiDAR direction feels inverted:**
+Use the `lidar_axis` parameter on the bridge to match the sensor axis:
+
+```bash
+ros2 run panda_controller shared_control_bridge --ros-args -p lidar_axis:=x
+```
+
 **If robot doesn't move despite non-zero joint velocities:**
 1. Check hardware interfaces are claimed: `ros2 control list_hardware_interfaces`
 2. Verify velocity interfaces show `[claimed]`
@@ -214,6 +234,12 @@ ros2 run panda_controller velocity_test.py
 ```bash
 ros2 launch panda_controller teleop.launch.py disable_safety:=true
 ```
+
+### Teleop Controller Notes
+
+- B button sends a safe joint pose by switching to the position controller,
+  publishing a single `JointTrajectory`, then switching back to velocity control.
+- X button toggles between position and velocity controllers.
 ```
 
 ---
@@ -225,5 +251,5 @@ Test vibration: sudo fftest /dev/input/event20
 - ✅ ROS2 control integration
 - ✅ Cartesian velocity control with KDL
 - ✅ Real-time inverse kinematics
-- Safety constraints (in development)
+- ✅ Safety constraints (in development)
 - Shared autonomy (in development)
