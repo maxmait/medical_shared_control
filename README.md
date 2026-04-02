@@ -25,21 +25,11 @@ Real-time safety control (RT core):
 - The RT core outputs a safe velocity command based on LiDAR distance.
 
 ## Architecture
-
-```mermaid
-flowchart TD
-	A[Gazebo sensors] --> B[ROS2 topics]
-	B --> C[shared_control_bridge]
-	C --> D[Lock-free latest-value buffer]
-	D --> E[RT core 1 kHz]
-	E --> D
-	C --> F["/panda_velocity_cmd"]
-	F --> G[ros2_control velocity controller]
-```
+![Simplified Data Flow Chart](readme_assets/medical_RT_communication.png)
 
 Safety bridge topic mapping:
 - Inputs: `/probe/scan`, `/panda_velocity_cmd_user`, `/joint_states`
-- Output: `/panda_velocity_cmd`
+- Output: `/panda_velocity_cmd`, `/haptic_feedback` 
 
 Safety scaling behavior:
 - The RT core scales motion toward the LiDAR beam direction more aggressively.
