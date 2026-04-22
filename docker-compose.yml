@@ -1,0 +1,20 @@
+services:
+  ros:
+    build: .
+    container_name: medical_robot_ros
+    network_mode: host
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - XAUTHORITY=/tmp/.Xauthority
+      - ROS_DOMAIN_ID=0
+    volumes:
+      - .:/workspaces/medical_robot_shared_control
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - ${XAUTHORITY:-$HOME/.Xauthority}:/tmp/.Xauthority:rw
+    devices:
+      - /dev/input:/dev/input
+    group_add:
+      - input
+    stdin_open: true
+    tty: true
