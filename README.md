@@ -44,6 +44,39 @@ distance-based slowdown. Components that move away or laterally are kept at
 full or mildly reduced speed. This prevents unnecessary slowdown when the
 tool is retreating or sliding parallel to tissue.
 
+## Docker Usage
+
+Requirements:
+- Docker Engine
+- Docker Compose (v2)
+- X11 display (for Gazebo/RViz)
+
+Build the image:
+
+```bash
+docker build -t medical_shared .
+```
+
+Run with volumes via compose:
+
+```bash
+xhost +local:docker
+docker compose up
+```
+
+Open a new terminal in the running container:
+
+```bash
+docker exec -it medical_robot_ros bash
+```
+
+Remember to source in each container terminal:
+
+```bash
+cd /workspaces/medical_robot_shared_control/panda_ws
+source install/setup.bash
+```
+
 ## Quick Start Commands
 
 ### Demo Launch (Gazebo + RViz camera + teleop)
@@ -233,9 +266,6 @@ ros2 launch panda_controller teleop.launch.py disable_safety:=true
 ```
 
 ---
-
-
-Test vibration: sudo fftest /dev/input/event20
 ## Project Status
 - ✅ Panda robot simulation in Gazebo
 - ✅ ROS2 control integration
