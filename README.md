@@ -83,6 +83,22 @@ Real-time safety control (RT core):
 - The RT loop avoids dynamic memory allocation and never waits on ROS.
 - ROS nodes only exchange data via a lock-free latest-value buffer.
 - The RT core outputs a safe velocity command based on LiDAR distance.
+- A dead-man watchdog zeroes the output if the LiDAR or user-command stream
+  goes stale (default 0.2 s), so a dropped input never replays the last motion.
+- All safety thresholds are ROS parameters (`safety.stop_distance`,
+  `safety.slow_distance`, `safety.max_linear_vel`, `safety.input_timeout_s`,
+  ...) on the `shared_control_bridge`, and the output is saturated to absolute
+  velocity limits.
+- The pure safety law is unit-tested with gtest (`colcon test
+  --packages-select safety_controller`).
+
+Inverse kinematics:
+- `panda_velocity_controller` resolves the full 7-DoF arm from a Cartesian
+  twist using a damped-least-squares KDL solver (`ChainIkSolverVel_wdls`), so
+  joint velocities stay bounded near singularities. Output joint velocities are
+  additionally clamped to `max_joint_vel`.
+- Teleop is 6-DoF: hold the orientation button to command roll/pitch/yaw with
+  the sticks instead of translation.
 
 ## Architecture
 ![Simplified Data Flow Chart](readme_assets/medical_RT_communication.png)
@@ -111,10 +127,26 @@ Extended command lists, troubleshooting notes, and teleop details are in
 [docs/commands.md](docs/commands.md).
 
 ---
+## Testing
+
+The real-time safety core has a gtest unit suite (velocity scaling, stop
+hysteresis, direction-aware slowdown, output clamping, watchdog zeroing, and
+the lock-free buffer). GitHub Actions builds the workspace and runs the tests
+on every push (see `.github/workflows/ci.yml`).
+
+```bash
+cd panda_ws
+colcon build --packages-select safety_controller panda_description panda_controller
+colcon test --packages-select safety_controller && colcon test-result --verbose
+```
+
 ## Project Status
 - ✅ Panda robot simulation in Gazebo
 - ✅ ROS2 control integration
 - ✅ Cartesian velocity control with KDL
-- ✅ Real-time inverse kinematics
-- ✅ Safety constraints
-- Shared autonomy (in development)
+- ✅ Full 7-DoF real-time inverse kinematics (damped least-squares)
+- ✅ 6-DoF teleoperation (translation + orientation)
+- ✅ Distance-based safety constraints with dead-man watchdog
+- ✅ Controller reconnect with bounded retry
+- ✅ Unit tests + CI for the safety core
+- ⏳ Eyeball curvature-following (future work — see `to_do.txt`)

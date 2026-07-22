@@ -1,4 +1,20 @@
--The teleoperation is only using the last joint as inverse kinematic. We need to make it use the whole inverse kinematic
--create a function, which tries to reconnect to controller through a service call.
-- Make a function, which will recreate the eyeball, by moving the robot perpendicular to the eye and recreate the curvature, so we are able to 
-follow the distance with the robot as.
+Roadmap / future work
+=====================
+
+DONE
+- Whole-arm inverse kinematics: teleop emits a Cartesian twist and
+  panda_velocity_controller resolves all 7 joints (damped-least-squares KDL
+  solver, ChainIkSolverVel_wdls). The old "last joint only" limitation no
+  longer applies.
+- Controller reconnect: tele_controller_input retries the controller_manager
+  switch with a bounded backoff when the service is unavailable or fails.
+- Safety watchdog, tunable safety parameters, damped IK + velocity clamps,
+  and a gtest suite for the real-time safety core (see README Project Status).
+
+FUTURE
+- Eyeball curvature-following: move the robot perpendicular to the eye,
+  reconstruct the corneal/scleral curvature (e.g. from the tool-tip LiDAR
+  sweep or the camera), and follow that surface at a commanded stand-off
+  distance so the tool tracks the tissue contour automatically. This is the
+  main remaining research feature and is intentionally out of scope for the
+  current demo-ready milestone.

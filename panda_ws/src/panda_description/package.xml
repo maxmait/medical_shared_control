@@ -2,10 +2,12 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>panda_description</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="maxmai98@gmail.com">utk</maintainer>
-  <license>TODO: License declaration</license>
+  <version>1.0.0</version>
+  <description>URDF/xacro robot description, tool-tip LiDAR and camera sensors,
+  Gazebo medical-procedure worlds, and launch files for the Panda surgical
+  shared-control simulation.</description>
+  <maintainer email="maxmai98@gmail.com">Max Mai</maintainer>
+  <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   
