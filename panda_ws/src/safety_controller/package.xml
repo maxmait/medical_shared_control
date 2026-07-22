@@ -1,13 +1,17 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>safety_controller</name>
-  <version>0.0.0</version>
-  <description>Safety controller shared memory library</description>
+  <version>1.0.0</version>
+  <description>ROS-independent real-time safety core: distance-based virtual
+  constraints and direction-aware shared-control velocity scaling for
+  human-guided surgical manipulation.</description>
 
-  <maintainer email="maxmai98@gmail.com">Your Name</maintainer>
+  <maintainer email="maxmai98@gmail.com">Max Mai</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <test_depend>ament_cmake_gtest</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

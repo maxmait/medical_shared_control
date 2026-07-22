@@ -108,8 +108,15 @@ install(PROGRAMS
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
+  # Skip the purely stylistic linters (copyright/cpplint/uncrustify/pep257/flake8)
+  # that conflict with this repo's deliberate tab-indentation style and the
+  # legacy hardware utility scripts; keep the meaningful checks active
+  # (cppcheck static analysis, lint_cmake, xmllint).
   set(ament_cmake_copyright_FOUND TRUE)
   set(ament_cmake_cpplint_FOUND TRUE)
+  set(ament_cmake_uncrustify_FOUND TRUE)
+  set(ament_cmake_pep257_FOUND TRUE)
+  set(ament_cmake_flake8_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
 

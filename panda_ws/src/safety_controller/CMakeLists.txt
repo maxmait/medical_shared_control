@@ -36,4 +36,20 @@ install(
 
 ament_export_include_directories(include)
 ament_export_libraries(safety_controller)
+
+if(BUILD_TESTING)
+  find_package(ament_cmake_gtest REQUIRED)
+
+  # Unit tests for the pure safety law and the lock-free buffer.
+  ament_add_gtest(test_safety test/test_safety.cpp)
+  target_link_libraries(test_safety safety_controller Threads::Threads)
+
+  # Compile the standalone RT smoke harness so it never bit-rots.
+  add_executable(shared_control_rt_standalone shared_control_rt.cpp)
+  target_compile_definitions(shared_control_rt_standalone PRIVATE SHARED_CONTROL_RT_STANDALONE)
+  target_include_directories(shared_control_rt_standalone PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/include)
+  target_link_libraries(shared_control_rt_standalone Threads::Threads)
+endif()
+
 ament_package()

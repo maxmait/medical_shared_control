@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main, finishing-touches]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    container:
+      image: osrf/ros:humble-desktop
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install workspace dependencies
+        shell: bash
+        run: |
+          apt-get update
+          rosdep update
+          rosdep install --from-paths panda_ws/src/safety_controller panda_ws/src/panda_controller \
+            --ignore-src -r -y || true
+
+      - name: Build (safety core + controller nodes)
+        shell: bash
+        run: |
+          source /opt/ros/humble/setup.bash
+          cd panda_ws
+          colcon build --packages-select safety_controller panda_description panda_controller
+
+      - name: Test (safety-core gtests + lint)
+        shell: bash
+        run: |
+          source /opt/ros/humble/setup.bash
+          cd panda_ws
+          colcon test --packages-select safety_controller panda_controller
+          colcon test-result --verbose
