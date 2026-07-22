@@ -141,12 +141,12 @@ colcon test --packages-select safety_controller && colcon test-result --verbose
 ```
 
 ## Project Status
-- ✅ Panda robot simulation in Gazebo
-- ✅ ROS2 control integration
-- ✅ Cartesian velocity control with KDL
-- ✅ Full 7-DoF real-time inverse kinematics (damped least-squares)
-- ✅ 6-DoF teleoperation (translation + orientation)
-- ✅ Distance-based safety constraints with dead-man watchdog
-- ✅ Controller reconnect with bounded retry
-- ✅ Unit tests + CI for the safety core
-- ⏳ Eyeball curvature-following (future work — see `to_do.txt`)
+- Panda robot simulation in Gazebo (done)
+- ROS2 control integration (done)
+- Cartesian velocity control with KDL (done)
+- Full 7-DoF real-time inverse kinematics (damped least-squares) (done)
+- 6-DoF teleoperation (translation + orientation) (done)
+- Distance-based safety constraints with dead-man watchdog (done)
+- Controller reconnect with bounded retry (done)
+- Unit tests + CI for the safety core (done)
+- Eyeball curvature-following (future work — see `to_do.txt`)
