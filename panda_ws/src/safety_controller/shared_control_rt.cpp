@@ -12,48 +12,69 @@ namespace safety_controller {
 namespace {
 
 void best_effort_realtime_setup(int priority) {
-	mlockall(MCL_CURRENT | MCL_FUTURE);
+	if (mlockall(MCL_CURRENT | MCL_FUTURE) != 0) {
+		// Non-fatal: without locked memory the RT loop may page-fault, but it
+		// still runs. Nothing to log from here (no ROS); the bridge warns.
+	}
 
 	sched_param params;
 	params.sched_priority = priority;
-	pthread_setschedparam(pthread_self(), SCHED_FIFO, &params);
+	if (pthread_setschedparam(pthread_self(), SCHED_FIFO, &params) != 0) {
+		// Non-fatal: falls back to the default scheduling policy when the
+		// process lacks CAP_SYS_NICE / RT privileges.
+	}
 }
 
-OutputState compute_safe_command(const InputState& in) {
+double clamp_abs(double value, double limit) {
+	if (value > limit) return limit;
+	if (value < -limit) return -limit;
+	return value;
+}
+
+}  // namespace
+
+OutputState compute_safe_command(const InputState& in,
+                                 const SafetyParams& p,
+                                 SafetyState& state,
+                                 double input_age_s) {
 	OutputState out;
 
-	// Placeholder safety: linearly scale down velocity as lidar approaches 0.05 m.
-	const double stop_distance = 0.0033131339587271214;
-	const double slow_distance = 0.05;
-	const double release_margin = 0.005;
-	const double min_scale = 0.02;
-	const double filter_alpha = 0.2;
-	const double lateral_weight = 0.3;
-
-	static bool range_initialized = false;
-	static double filtered_range = 0.0;
-	static bool stopped = false;
-
-	if (!range_initialized) {
-		filtered_range = in.lidar_range;
-		range_initialized = true;
-	} else {
-		filtered_range = (filter_alpha * in.lidar_range) + ((1.0 - filter_alpha) * filtered_range);
+	// Dead-man watchdog: if the inputs have gone stale (a stalled LiDAR or a
+	// dropped teleop stream), hold zero output rather than replaying the last
+	// command. `out` is zero-initialised, so an early return is a safe stop.
+	if (input_age_s < 0.0 || input_age_s > p.input_timeout_s) {
+		return out;
 	}
+
+	const double stop_distance = p.stop_distance;
+	const double slow_distance = p.slow_distance;
+	const double release_margin = p.release_margin;
+	const double min_scale = p.min_scale;
+	const double filter_alpha = p.filter_alpha;
+	const double lateral_weight = p.lateral_weight;
+
+	if (!state.range_initialized) {
+		state.filtered_range = in.lidar_range;
+		state.range_initialized = true;
+	} else {
+		state.filtered_range =
+			(filter_alpha * in.lidar_range) + ((1.0 - filter_alpha) * state.filtered_range);
+	}
+	const double filtered_range = state.filtered_range;
 	double scale = 1.0;
 
-	if (stopped) {
+	if (state.stopped) {
 		if (filtered_range >= stop_distance + release_margin) {
-			stopped = false;
+			state.stopped = false;
 		} else {
 			scale = min_scale;
 		}
 	}
 
-	if (!stopped && filtered_range <= stop_distance) {
-		stopped = true;
+	if (!state.stopped && filtered_range <= stop_distance) {
+		state.stopped = true;
 		scale = min_scale;
-	} else if (!stopped && filtered_range < slow_distance) {
+	} else if (!state.stopped && filtered_range < slow_distance) {
 		scale = (filtered_range - stop_distance) / (slow_distance - stop_distance);
 	}
 
@@ -105,15 +126,26 @@ OutputState compute_safe_command(const InputState& in) {
 		out.safe_cmd_angular[i] = in.cmd_angular[i] * scale;
 	}
 
+	// Absolute saturation: never emit a command beyond the configured limits,
+	// regardless of the incoming command or the scaling above.
+	for (int i = 0; i < 3; ++i) {
+		out.safe_cmd_linear[i] = clamp_abs(out.safe_cmd_linear[i], p.max_linear_vel);
+		out.safe_cmd_angular[i] = clamp_abs(out.safe_cmd_angular[i], p.max_angular_vel);
+	}
+
 	return out;
 }
 
-}  // namespace
-
-SharedControlRt::SharedControlRt(SharedMemory& shared, double rate_hz)
+SharedControlRt::SharedControlRt(SharedMemory& shared, double rate_hz, const SafetyParams& params)
 	: shared_(shared),
 	  period_(std::chrono::duration_cast<std::chrono::steady_clock::duration>(
-		  std::chrono::duration<double>(1.0 / rate_hz))) {}
+		  std::chrono::duration<double>(1.0 / rate_hz))) {
+	params_.write(params);
+}
+
+void SharedControlRt::set_params(const SafetyParams& params) {
+	params_.write(params);
+}
 
 SharedControlRt::~SharedControlRt() {
 	stop();
@@ -139,7 +171,23 @@ void SharedControlRt::loop() {
 		next += period_;
 
 		const InputState in = shared_.inputs.read();
-		const OutputState out = compute_safe_command(in);
+		const SafetyParams params = params_.read();
+
+		// Input age from the shared steady_clock (same process as the bridge).
+		// A never-written input (stamp_ns == 0) reads as maximally stale.
+		double input_age_s = params.input_timeout_s + 1.0;
+		if (in.stamp_ns != 0) {
+			const uint64_t now_ns = static_cast<uint64_t>(
+				std::chrono::duration_cast<std::chrono::nanoseconds>(
+					std::chrono::steady_clock::now().time_since_epoch()).count());
+			if (now_ns >= in.stamp_ns) {
+				input_age_s = static_cast<double>(now_ns - in.stamp_ns) * 1e-9;
+			} else {
+				input_age_s = 0.0;
+			}
+		}
+
+		const OutputState out = compute_safe_command(in, params, state_, input_age_s);
 		shared_.outputs.write(out);
 
 		std::this_thread::sleep_until(next);

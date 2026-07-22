@@ -3,11 +3,9 @@
 #include <std_msgs/msg/float64_multi_array.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <rcl_interfaces/srv/get_parameters.hpp>
+#include <algorithm>
 #include <kdl/chain.hpp>
-#include <kdl/chainfksolver.hpp>
-#include <kdl/chainfksolverpos_recursive.hpp>
-#include <kdl/chainiksolvervel_pinv.hpp>
-#include <kdl/chainjnttojacsolver.hpp>
+#include <kdl/chainiksolvervel_wdls.hpp>
 #include <kdl_parser/kdl_parser.hpp>
 #include <urdf/model.h>
 
@@ -16,6 +14,10 @@ class PandaVelocityController : public rclcpp::Node
 public:
     PandaVelocityController() : Node("panda_velocity_controller")
     {
+        // Safety / IK tuning parameters.
+        max_joint_vel_ = this->declare_parameter<double>("max_joint_vel", 1.5);   // [rad/s] per-joint clamp
+        ik_lambda_ = this->declare_parameter<double>("ik_lambda", 0.1);           // damped-least-squares factor
+
         // Initialize KDL chain
         initializeKDL();
         
@@ -118,11 +120,12 @@ private:
         
         RCLCPP_INFO(this->get_logger(), "KDL chain extracted successfully");
         
-        // Initialize solvers - all three now persistent members
-        fk_solver_ = std::make_unique<KDL::ChainFkSolverPos_recursive>(kdl_chain_);
-        jac_solver_ = std::make_unique<KDL::ChainJntToJacSolver>(kdl_chain_);
-        ik_vel_solver_ = std::make_unique<KDL::ChainIkSolverVel_pinv>(kdl_chain_);  // Add this
-        
+        // Damped-least-squares velocity IK solver over the full chain. The
+        // damping factor keeps joint velocities bounded near singularities
+        // (an undamped pseudo-inverse would spike them).
+        ik_vel_solver_ = std::make_unique<KDL::ChainIkSolverVel_wdls>(kdl_chain_);
+        ik_vel_solver_->setLambda(ik_lambda_);
+
         // Initialize joint arrays
         joint_positions_.resize(kdl_chain_.getNrOfJoints());
         joint_velocities_.resize(kdl_chain_.getNrOfJoints());
@@ -141,15 +144,23 @@ private:
     {
         if (!kdl_initialized_) return;
         
-        // Update joint positions (find the correct mapping)
-        for (size_t i = 0; i < msg->name.size() && i < static_cast<size_t>(joint_positions_.rows()); ++i) {
-            // Check if this is a panda joint
-            if (msg->name[i].find("panda_joint") != std::string::npos) {
-                // Extract joint number (assuming format "panda_jointX")
-                size_t joint_num = msg->name[i].back() - '1'; // Convert '1'-'7' to 0-6
-                if (joint_num < static_cast<size_t>(joint_positions_.rows())) {
-                    joint_positions_(joint_num) = msg->position[i];
-                }
+        // Update joint positions (find the correct mapping). Bound by both the
+        // name and position array sizes: a JointState may carry fewer positions
+        // than names, so indexing position[i] must be guarded independently.
+        const size_t n = std::min(msg->name.size(), msg->position.size());
+        for (size_t i = 0; i < n; ++i) {
+            const auto& name = msg->name[i];
+            if (name.empty() || name.find("panda_joint") == std::string::npos) {
+                continue;
+            }
+            // Extract joint number (assuming format "panda_jointX", X in 1..7).
+            const char last = name.back();
+            if (last < '1' || last > '7') {
+                continue;
+            }
+            const size_t joint_num = static_cast<size_t>(last - '1');
+            if (joint_num < static_cast<size_t>(joint_positions_.rows())) {
+                joint_positions_(joint_num) = msg->position[i];
             }
         }
     }
@@ -161,7 +172,7 @@ private:
     
     void controlLoop()
     {
-        if (!kdl_initialized_ || !fk_solver_ || !jac_solver_ || !ik_vel_solver_) return;
+        if (!kdl_initialized_ || !ik_vel_solver_) return;
 
         // Skip computation if no velocity command is active - avoids unnecessary work
         bool is_zero_twist = (
@@ -181,15 +192,6 @@ private:
             return;
         }
 
-        // Jacobian is correctly recalculated each loop since it depends on joint positions
-        KDL::Jacobian jacobian(kdl_chain_.getNrOfJoints());
-        int jac_result = jac_solver_->JntToJac(joint_positions_, jacobian);
-        
-        if (jac_result != 0) {
-            RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "Failed to compute Jacobian");
-            return;
-        }
-        
         // Convert Twist to KDL Vector
         KDL::Twist target_vel;
         target_vel.vel.x(target_twist_.linear.x);
@@ -201,17 +203,18 @@ private:
         
         // Reuse persistent solver - no longer recreated every loop
         int ik_result = ik_vel_solver_->CartToJnt(joint_positions_, target_vel, joint_velocities_);
-        
+
         if (ik_result < 0) {
             RCLCPP_WARN_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "IK velocity solver failed");
             return;
         }
-        
-        // Publish joint velocities
+
+        // Publish joint velocities, clamped to the per-joint limit as a final
+        // safety guard even though the damped solver keeps them bounded.
         auto vel_msg = std_msgs::msg::Float64MultiArray();
         vel_msg.data.resize(joint_velocities_.rows());
         for (unsigned int i = 0; i < joint_velocities_.rows(); ++i) {
-            vel_msg.data[i] = joint_velocities_(i);
+            vel_msg.data[i] = std::clamp(joint_velocities_(i), -max_joint_vel_, max_joint_vel_);
         }
         joint_vel_pub_->publish(vel_msg);
     }
@@ -223,14 +226,14 @@ private:
     rclcpp::TimerBase::SharedPtr timer_;
     
     KDL::Chain kdl_chain_;
-    std::unique_ptr<KDL::ChainFkSolverPos_recursive> fk_solver_;
-    std::unique_ptr<KDL::ChainJntToJacSolver> jac_solver_;
-    std::unique_ptr<KDL::ChainIkSolverVel_pinv> ik_vel_solver_;  // Add this
+    std::unique_ptr<KDL::ChainIkSolverVel_wdls> ik_vel_solver_;
 
     KDL::JntArray joint_positions_;
     KDL::JntArray joint_velocities_;
     geometry_msgs::msg::Twist target_twist_;
-    
+
+    double max_joint_vel_ = 1.5;
+    double ik_lambda_ = 0.1;
     bool kdl_initialized_ = false;
 };
 

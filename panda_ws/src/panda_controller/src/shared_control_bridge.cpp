@@ -4,6 +4,7 @@
 #include <sensor_msgs/msg/laser_scan.hpp>
 
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <memory>
 #include <string>
@@ -42,6 +43,8 @@ public:
 		lidar_frame_ = get_parameter("lidar_frame").as_string();
 		lidar_axis_ = axisFromString(get_parameter("lidar_axis").as_string());
 
+		rt_.set_params(declareSafetyParams());
+
 		tf_listener_ = std::make_unique<tf2_ros::TransformListener>(tf_buffer_);
 
 		lidar_sub_ = create_subscription<sensor_msgs::msg::LaserScan>(
@@ -72,6 +75,32 @@ public:
 	}
 
 private:
+	// Declare and read every SafetyParams field as a ROS parameter, so the
+	// safety law can be tuned without recompiling. Defaults come from the
+	// struct's own in-class initialisers.
+	safety_controller::SafetyParams declareSafetyParams() {
+		safety_controller::SafetyParams p;
+		p.stop_distance = declare_parameter<double>("safety.stop_distance", p.stop_distance);
+		p.slow_distance = declare_parameter<double>("safety.slow_distance", p.slow_distance);
+		p.release_margin = declare_parameter<double>("safety.release_margin", p.release_margin);
+		p.min_scale = declare_parameter<double>("safety.min_scale", p.min_scale);
+		p.filter_alpha = declare_parameter<double>("safety.filter_alpha", p.filter_alpha);
+		p.lateral_weight = declare_parameter<double>("safety.lateral_weight", p.lateral_weight);
+		p.max_linear_vel = declare_parameter<double>("safety.max_linear_vel", p.max_linear_vel);
+		p.max_angular_vel = declare_parameter<double>("safety.max_angular_vel", p.max_angular_vel);
+		p.input_timeout_s = declare_parameter<double>("safety.input_timeout_s", p.input_timeout_s);
+		return p;
+	}
+
+	// Stamp the cached input with the current steady_clock time (the same clock
+	// the RT watchdog reads) and publish it to the lock-free buffer.
+	void stampAndWrite() {
+		input_cache_.stamp_ns = static_cast<uint64_t>(
+			std::chrono::duration_cast<std::chrono::nanoseconds>(
+				std::chrono::steady_clock::now().time_since_epoch()).count());
+		shared_.inputs.write(input_cache_);
+	}
+
 	void lidarCallback(const sensor_msgs::msg::LaserScan::SharedPtr msg) {
 		if (msg->ranges.empty()) {
 			return;
@@ -110,7 +139,7 @@ private:
 		input_cache_.lidar_dir_base[0] = lidar_dir_base_[0];
 		input_cache_.lidar_dir_base[1] = lidar_dir_base_[1];
 		input_cache_.lidar_dir_base[2] = lidar_dir_base_[2];
-		shared_.inputs.write(input_cache_);
+		stampAndWrite();
 	}
 
 	void userCmdCallback(const geometry_msgs::msg::Twist::SharedPtr msg) {
@@ -120,7 +149,7 @@ private:
 		input_cache_.cmd_angular[0] = msg->angular.x;
 		input_cache_.cmd_angular[1] = msg->angular.y;
 		input_cache_.cmd_angular[2] = msg->angular.z;
-		shared_.inputs.write(input_cache_);
+		stampAndWrite();
 	}
 
 	void jointStateCallback(const sensor_msgs::msg::JointState::SharedPtr msg) {
@@ -142,7 +171,7 @@ private:
 			}
 		}
 
-		shared_.inputs.write(input_cache_);
+		stampAndWrite();
 	}
 
 	void publishOutput() {
