@@ -50,9 +50,20 @@ public:
         this->declare_parameter("velocity_controller", "arm_velocity_controller");
         this->declare_parameter("position_controller", "arm_controller");
 
+        // Hold this button to command orientation (roll/pitch/yaw) instead of
+        // translation, giving full 6-DoF teleop. -1 disables orientation mode.
+        this->declare_parameter("orientation_button_index", 5);
+        // Bounded reconnect for controller switches (handles a controller_manager
+        // that drops and comes back).
+        this->declare_parameter("switch_max_retries", 3);
+        this->declare_parameter("switch_retry_delay", 1.0);
+
         x_button_index_ = this->get_parameter("x_button_index").as_int();
         velocity_controller_ = this->get_parameter("velocity_controller").as_string();
         position_controller_ = this->get_parameter("position_controller").as_string();
+        orientation_button_index_ = this->get_parameter("orientation_button_index").as_int();
+        switch_max_retries_ = this->get_parameter("switch_max_retries").as_int();
+        switch_retry_delay_ = this->get_parameter("switch_retry_delay").as_double();
 
         // Frames for local control
         this->declare_parameter("base_frame", "panda_link0");
@@ -75,6 +86,7 @@ public:
         RCLCPP_INFO(this->get_logger(), "  B button: Safe joint pose");
         RCLCPP_INFO(this->get_logger(), "  X button: Toggle controller");
         RCLCPP_INFO(this->get_logger(), "  Y button: Toggle coordinate frame (Global/Local)");
+        RCLCPP_INFO(this->get_logger(), "  Orientation button (hold): sticks command roll/pitch/yaw (6-DoF)");
         RCLCPP_INFO(this->get_logger(), "  Current frame: GLOBAL (base frame)");
     }
 
@@ -191,15 +203,25 @@ private:
             RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "PRECISION MODE");
         }
         
+        // Orientation mode: while the modifier button is held, the sticks
+        // command roll/pitch/yaw (full 6-DoF teleop) instead of translation.
+        bool orient_mode = (orientation_button_index_ >= 0 &&
+            msg->buttons.size() > static_cast<size_t>(orientation_button_index_) &&
+            msg->buttons[orientation_button_index_]);
+
         // Create base twist command (in joystick reference frame)
         geometry_msgs::msg::Twist base_twist;
-        base_twist.linear.x = left_y * linear_scale * speed_multiplier;    // Forward/backward
-        base_twist.linear.y = -left_x * linear_scale * speed_multiplier;   // Left/right (inverted)
-        base_twist.linear.z = right_y * linear_scale * speed_multiplier;   // Up/down
-        
-        base_twist.angular.x = 0.0;  // No roll
-        base_twist.angular.y = 0.0;  // No pitch  
-        base_twist.angular.z = -right_x * angular_scale * speed_multiplier; // Yaw rotation
+        if (orient_mode) {
+            base_twist.angular.x = left_y * angular_scale * speed_multiplier;   // Roll
+            base_twist.angular.y = -left_x * angular_scale * speed_multiplier;  // Pitch
+            base_twist.angular.z = -right_x * angular_scale * speed_multiplier; // Yaw
+            RCLCPP_INFO_THROTTLE(this->get_logger(), *this->get_clock(), 1000, "ORIENTATION MODE (roll/pitch/yaw)");
+        } else {
+            base_twist.linear.x = left_y * linear_scale * speed_multiplier;    // Forward/backward
+            base_twist.linear.y = -left_x * linear_scale * speed_multiplier;   // Left/right (inverted)
+            base_twist.linear.z = right_y * linear_scale * speed_multiplier;   // Up/down
+            base_twist.angular.z = -right_x * angular_scale * speed_multiplier; // Yaw rotation
+        }
         
         // Transform twist based on coordinate frame selection
         if (use_local_frame_ && has_joint_states_) {
@@ -212,9 +234,11 @@ private:
         velocity_pub_->publish(twist);
         
         // Debug output (throttled)
-        if (std::abs(twist.linear.x) > 0.01 || 
-            std::abs(twist.linear.y) > 0.01 || 
-            std::abs(twist.linear.z) > 0.01 || 
+        if (std::abs(twist.linear.x) > 0.01 ||
+            std::abs(twist.linear.y) > 0.01 ||
+            std::abs(twist.linear.z) > 0.01 ||
+            std::abs(twist.angular.x) > 0.01 ||
+            std::abs(twist.angular.y) > 0.01 ||
             std::abs(twist.angular.z) > 0.01) {
             
             std::string frame_str = use_local_frame_ ? "LOCAL" : "GLOBAL";
@@ -388,10 +412,32 @@ private:
         }
     }
 
+    // Request a controller switch, retrying up to switch_max_retries_ times with
+    // a fixed delay if the service is unavailable or returns failure. This makes
+    // teleop resilient to a controller_manager that briefly drops and reconnects.
+    // on_done is invoked once, with the terminal success/failure.
     void requestControllerSwitch(const std::vector<std::string>& activate,
                                  const std::vector<std::string>& deactivate,
-                                 std::function<void(bool)> on_done)
+                                 std::function<void(bool)> on_done,
+                                 int attempts_left = -1)
     {
+        if (attempts_left < 0) {
+            attempts_left = switch_max_retries_;
+        }
+
+        if (!switch_client_->service_is_ready()) {
+            if (attempts_left > 0) {
+                RCLCPP_WARN(this->get_logger(),
+                    "Switch service not ready, retrying in %.1fs (%d attempts left)",
+                    switch_retry_delay_, attempts_left);
+                scheduleSwitchRetry(activate, deactivate, on_done, attempts_left - 1);
+            } else {
+                RCLCPP_WARN(this->get_logger(), "Switch service unavailable, giving up");
+                if (on_done) on_done(false);
+            }
+            return;
+        }
+
         auto request = std::make_shared<controller_manager_msgs::srv::SwitchController::Request>();
         request->strictness = controller_manager_msgs::srv::SwitchController::Request::STRICT;
         request->activate_controllers = activate;
@@ -400,7 +446,8 @@ private:
         switch_in_progress_ = true;
         switch_client_->async_send_request(
             request,
-            [this, on_done](rclcpp::Client<controller_manager_msgs::srv::SwitchController>::SharedFuture future) {
+            [this, activate, deactivate, on_done, attempts_left](
+                rclcpp::Client<controller_manager_msgs::srv::SwitchController>::SharedFuture future) {
                 switch_in_progress_ = false;
                 bool ok = false;
                 try {
@@ -409,9 +456,39 @@ private:
                     RCLCPP_WARN(this->get_logger(), "Controller switch exception: %s", ex.what());
                 }
 
-                if (on_done) {
-                    on_done(ok);
+                if (ok) {
+                    if (on_done) on_done(true);
+                    return;
                 }
+
+                if (attempts_left > 0) {
+                    RCLCPP_WARN(this->get_logger(),
+                        "Controller switch failed, retrying in %.1fs (%d attempts left)",
+                        switch_retry_delay_, attempts_left);
+                    scheduleSwitchRetry(activate, deactivate, on_done, attempts_left - 1);
+                } else if (on_done) {
+                    on_done(false);
+                }
+            });
+    }
+
+    // Schedule a single delayed retry of requestControllerSwitch.
+    void scheduleSwitchRetry(const std::vector<std::string>& activate,
+                             const std::vector<std::string>& deactivate,
+                             std::function<void(bool)> on_done,
+                             int attempts_left)
+    {
+        if (retry_timer_) {
+            retry_timer_->cancel();
+        }
+        const auto delay = std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::duration<double>(switch_retry_delay_));
+        retry_timer_ = this->create_wall_timer(delay,
+            [this, activate, deactivate, on_done, attempts_left]() {
+                if (retry_timer_) {
+                    retry_timer_->cancel();
+                }
+                requestControllerSwitch(activate, deactivate, on_done, attempts_left);
             });
     }
     
@@ -440,10 +517,14 @@ private:
     bool using_velocity_controller_ = true;
     bool switch_in_progress_ = false;
     int x_button_index_ = 2;
+    int orientation_button_index_ = 5;
+    int switch_max_retries_ = 3;
+    double switch_retry_delay_ = 1.0;
     std::string velocity_controller_;
     std::string position_controller_;
 
     rclcpp::TimerBase::SharedPtr switch_back_timer_;
+    rclcpp::TimerBase::SharedPtr retry_timer_;
 };
 
 int main(int argc, char** argv)
