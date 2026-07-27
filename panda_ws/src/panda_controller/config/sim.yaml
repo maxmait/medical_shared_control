@@ -1,0 +1,57 @@
+# Central parameter file for the shared-control simulation.
+# Loaded by bringup.launch.py (and the individual launch files) so every tunable
+# lives in one place. Edit values here instead of passing them on the command line.
+
+shared_control_bridge:
+  ros__parameters:
+    use_sim_time: true
+    # Topic / frame wiring
+    lidar_topic: "/probe/scan"
+    user_cmd_topic: "/panda_velocity_cmd_user"
+    joint_state_topic: "/joint_states"
+    output_cmd_topic: "/panda_velocity_cmd"
+    publish_rate: 100.0
+    base_frame: "panda_link0"
+    lidar_frame: "panda_lidar_frame"
+    lidar_axis: "x"
+    # Safety law (see safety_controller::SafetyParams)
+    safety:
+      stop_distance: 0.005      # [m] latch to a near-stop below this range
+      slow_distance: 0.05       # [m] begin scaling motion down below this range
+      release_margin: 0.005     # [m] extra clearance needed to release the stop latch
+      min_scale: 0.02           # minimum velocity scale while active
+      filter_alpha: 0.2         # low-pass factor on the range signal
+      lateral_weight: 0.3       # fraction of slowdown applied to lateral/retreating motion
+      max_linear_vel: 0.25      # [m/s] absolute clamp per linear component
+      max_angular_vel: 1.0      # [rad/s] absolute clamp per angular component
+      input_timeout_s: 0.2      # [s] watchdog: zero output if inputs are older than this
+
+panda_velocity_controller:
+  ros__parameters:
+    use_sim_time: true
+    max_joint_vel: 1.5          # [rad/s] per-joint velocity clamp
+    ik_lambda: 0.1              # damped-least-squares factor
+
+tele_controller_input:
+  ros__parameters:
+    use_sim_time: true
+    linear_scale: 0.15
+    angular_scale: 0.3
+    deadzone: 0.15
+    trigger_threshold: 0.5
+    x_button_index: 2
+    orientation_button_index: 5 # hold to command roll/pitch/yaw (-1 disables)
+    switch_max_retries: 3
+    switch_retry_delay: 1.0
+    velocity_controller: "arm_velocity_controller"
+    position_controller: "arm_controller"
+    base_frame: "panda_link0"
+    tcp_frame: "panda_link7"
+
+haptic_feedback:
+  ros__parameters:
+    use_sim_time: true
+    max_vibration_intensity: 25000
+    enable_collision_feedback: true
+    enable_force_feedback: false
+    enable_status_feedback: true

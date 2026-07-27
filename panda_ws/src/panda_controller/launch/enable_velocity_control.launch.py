@@ -12,8 +12,17 @@ def generate_launch_description():
         default_value='true',
         description='Use simulation (Gazebo) clock if true'
     )
-    
+
+    params_file_arg = DeclareLaunchArgument(
+        'params_file',
+        default_value=PathJoinSubstitution([
+            FindPackageShare('panda_controller'), 'config', 'sim.yaml'
+        ]),
+        description='YAML file with node parameters (safety law, IK, teleop)'
+    )
+
     use_sim_time = LaunchConfiguration('use_sim_time')
+    params_file = LaunchConfiguration('params_file')
     
     # Include controller spawning (with delay)
     controllers_launch = TimerAction(
@@ -79,6 +88,7 @@ def generate_launch_description():
                 name='panda_velocity_controller',
                 output='screen',
                 parameters=[
+                    params_file,
                     {'use_sim_time': use_sim_time}
                 ]
             )
@@ -87,6 +97,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         use_sim_time_arg,
+        params_file_arg,
         controllers_launch,
         initial_pose,
         velocity_switch,

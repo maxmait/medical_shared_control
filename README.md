@@ -48,27 +48,62 @@ source install/setup.bash
 
 ## Quick Start Commands
 
-### Demo Launch (Gazebo + RViz camera + teleop)
+### Demo Launch (one command)
 
 ```bash
-# Terminal 1: Gazebo world with the human model
-ros2 launch panda_description gazebo.launch.py world_file:=medical_procedure.sdf
-
-# Terminal 2: Enable velocity control
-ros2 launch panda_controller enable_velocity_control.launch.py
-
-# Terminal 3: RViz camera feed
-ros2 launch panda_description rviz_camera.launch.py
-
-# Terminal 4: Teleop with haptic controller + safety bridge
-ros2 launch panda_controller teleop.launch.py
+ros2 launch panda_controller bringup.launch.py
 ```
 
-This launches the simulation, the camera feed, and teleop so you can control
-robot velocity with a haptic controller.
+That single command starts everything the demo needs — Gazebo with the medical
+world, the RViz camera feed, the controllers and velocity control, the teleop +
+safety bridge + haptics, and the live status window. It replaces the old
+four-terminal sequence.
+
+Useful arguments:
+
+```bash
+# A different world, no RViz:
+ros2 launch panda_controller bringup.launch.py world_file:=procedure.sdf start_rviz:=false
+
+# Bypass the safety layer (direct teleop):
+ros2 launch panda_controller bringup.launch.py disable_safety:=true
+
+# Hide the status window / haptics:
+ros2 launch panda_controller bringup.launch.py enable_dashboard:=false enable_haptic:=false
+```
 
 Safety control is enabled by default. Teleop publishes to a user command topic,
 and the safety bridge generates the final velocity command.
+
+### Configuration
+
+All node parameters — the safety-law thresholds, IK limits, and teleop scales —
+live in one file: [panda_ws/src/panda_controller/config/sim.yaml](panda_ws/src/panda_controller/config/sim.yaml).
+Edit values there (no rebuild needed for a plain launch) or point the launch at
+another file with `params_file:=/path/to/your.yaml`.
+
+### Status window
+
+The bringup starts a small live dashboard (`status_dashboard`) showing the
+joystick connection, active coordinate frame (global/local) and mode, which
+buttons/sticks/triggers are active (with each stick's axis meaning), the LiDAR
+tool-to-tissue distance, and — most usefully — the **user-commanded velocity
+next to the safety-scaled velocity**, so you can watch the safety layer slow the
+tool as it nears tissue. It also has a control guide and a **Reconnect joystick**
+button. It is display-only for the robot; run it alone with
+`ros2 run panda_controller status_dashboard.py`.
+
+### Joystick reconnect
+
+A `joy_manager` node supervises the joystick driver: it owns `joy_node` and
+restarts it fresh — which re-grabs a replugged controller — either automatically
+after the `/joy` stream goes silent, or on demand via the **Reconnect joystick**
+button (the `/joystick/reconnect` service). This fixes the stock `joy_node`
+holding a dead handle after the controller is unplugged and plugged back in.
+
+The individual launch files (`gazebo.launch.py`, `enable_velocity_control.launch.py`,
+`rviz_camera.launch.py`, `teleop.launch.py`) still work standalone — see
+[docs/commands.md](docs/commands.md).
 
 ![Robot control demo](readme_assets/robot_demo_2.gif)
 

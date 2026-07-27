@@ -1,8 +1,9 @@
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition, UnlessCondition
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
 import os
 
 def find_haptic_controller():
@@ -46,42 +47,6 @@ def find_haptic_controller():
         print(f"Haptic controller auto-detection failed: {e}")
     
     return '/dev/input/event20'
-
-def find_joystick():
-    """Find joystick device by checking /proc/bus/input/devices"""
-    try:
-        with open('/proc/bus/input/devices', 'r') as f:
-            content = f.read()
-        
-        devices = content.split('\n\n')
-        
-        for device_block in devices:
-            if not device_block.strip():
-                continue
-            
-            lines = device_block.strip().split('\n')
-            device_info = {}
-            
-            for line in lines:
-                if line.startswith('N: '):
-                    device_info['name'] = line.split('Name="')[1].rstrip('"') if 'Name="' in line else ''
-                elif line.startswith('H: '):
-                    handlers = line.split('Handlers=')[1] if 'Handlers=' in line else ''
-                    device_info['handlers'] = handlers
-            
-            # Look for js device (joystick)
-            if ('handlers' in device_info and 'js' in device_info['handlers']):
-                handlers = device_info['handlers'].split()
-                for handler in handlers:
-                    if handler.startswith('js'):
-                        device_path = f'/dev/input/{handler}'
-                        if os.path.exists(device_path):
-                            print(f"Auto-detected joystick: {device_info.get('name', 'Unknown')} at {device_path}")
-                            return device_path
-    except Exception as e:
-        print(f"Joystick auto-detection failed: {e}")
-    
-    return '/dev/input/js0'
 
 def generate_launch_description():
 
@@ -134,20 +99,27 @@ def generate_launch_description():
         description='Disable safety bridge and remapping'
     )
 
+    params_file_arg = DeclareLaunchArgument(
+        'params_file',
+        default_value=PathJoinSubstitution([
+            FindPackageShare('panda_controller'), 'config', 'sim.yaml'
+        ]),
+        description='YAML file with node parameters (safety law, IK, teleop)'
+    )
+    params_file = LaunchConfiguration('params_file')
+
     # --- Auto-detect devices ---
-    joystick_device = find_joystick()
     haptic_device = find_haptic_controller()
 
     # --- Nodes ---
 
-    # Joy node - reads raw joystick input
-    joy_node = Node(
-        package='joy',
-        executable='joy_node',
-        name='joy_node',
-        parameters=[
-            {'device': joystick_device}
-        ],
+    # Joystick supervisor: owns joy_node and can restart it (on the
+    # /joystick/reconnect service or after prolonged /joy silence) so a
+    # replugged controller re-establishes communication.
+    joy_manager = Node(
+        package='panda_controller',
+        executable='joy_manager.py',
+        name='joy_manager',
         output='screen'
     )
 
@@ -157,6 +129,7 @@ def generate_launch_description():
         executable='tele_controller_input',
         name='tele_controller_input',
         parameters=[
+            params_file,
             {'linear_scale': LaunchConfiguration('linear_scale')},
             {'angular_scale': LaunchConfiguration('angular_scale')}
         ],
@@ -172,6 +145,7 @@ def generate_launch_description():
         executable='tele_controller_input',
         name='tele_controller_input',
         parameters=[
+            params_file,
             {'linear_scale': LaunchConfiguration('linear_scale')},
             {'angular_scale': LaunchConfiguration('angular_scale')}
         ],
@@ -183,6 +157,7 @@ def generate_launch_description():
         package='panda_controller',
         executable='shared_control_bridge',
         name='shared_control_bridge',
+        parameters=[params_file],
         condition=UnlessCondition(LaunchConfiguration('disable_safety')),
         output='screen'
     )
@@ -193,6 +168,7 @@ def generate_launch_description():
         executable='haptic_feedback_node.py',
         name='haptic_feedback',
         parameters=[
+            params_file,
             {'controller_device': haptic_device},
             {'max_vibration_intensity': LaunchConfiguration('max_vibration_intensity')},
             {'enable_collision_feedback': LaunchConfiguration('enable_collision_feedback')},
@@ -213,8 +189,9 @@ def generate_launch_description():
         linear_scale_arg,
         angular_scale_arg,
         disable_safety_arg,
+        params_file_arg,
         # Nodes
-        joy_node,
+        joy_manager,
         tele_controller_safety,
         tele_controller_direct,
         shared_control_bridge,
