@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-colcon-common-extensions \
     python3-evdev \
+    python3-tk \
     ros-humble-ros-gz-sim \
     ros-humble-ros-gz-bridge \
     ros-humble-ros-gz-image \

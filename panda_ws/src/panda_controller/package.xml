@@ -15,6 +15,7 @@
   <depend>trajectory_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
   <depend>geometry_msgs</depend>
   <depend>controller_manager_msgs</depend>
   <depend>tf2</depend>
@@ -26,6 +27,7 @@
   <depend>safety_controller</depend>
   
   <exec_depend>ros2launch</exec_depend>
+  <exec_depend>python3-tk</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>xacro</exec_depend>
   <exec_depend>controller_manager</exec_depend>

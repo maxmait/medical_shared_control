@@ -3,6 +3,7 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/string.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include <trajectory_msgs/msg/joint_trajectory_point.hpp>
 #include <controller_manager_msgs/srv/switch_controller.hpp>
@@ -40,6 +41,11 @@ public:
         // Haptic feedback publishers - CORRECTED
         emergency_pub_ = this->create_publisher<std_msgs::msg::Bool>("/emergency_stop", 10);
         mode_change_pub_ = this->create_publisher<std_msgs::msg::Bool>("/teleop_mode_changed", 10);
+
+        // Latched publisher of the active coordinate frame so late-joining nodes
+        // (e.g. the status dashboard) always see the current GLOBAL/LOCAL state.
+        frame_pub_ = this->create_publisher<std_msgs::msg::String>(
+            "/teleop_frame", rclcpp::QoS(1).transient_local());
 
         // Parameters for scaling
         this->declare_parameter("linear_scale", 0.15);
@@ -88,6 +94,15 @@ public:
         RCLCPP_INFO(this->get_logger(), "  Y button: Toggle coordinate frame (Global/Local)");
         RCLCPP_INFO(this->get_logger(), "  Orientation button (hold): sticks command roll/pitch/yaw (6-DoF)");
         RCLCPP_INFO(this->get_logger(), "  Current frame: GLOBAL (base frame)");
+
+        publishFrame();
+    }
+
+    void publishFrame()
+    {
+        auto msg = std_msgs::msg::String();
+        msg.data = use_local_frame_ ? "LOCAL" : "GLOBAL";
+        frame_pub_->publish(msg);
     }
 
 private:
@@ -114,7 +129,8 @@ private:
             use_local_frame_ = !use_local_frame_;
             std::string frame_name = use_local_frame_ ? "LOCAL (TCP frame)" : "GLOBAL (base frame)";
             RCLCPP_INFO(this->get_logger(), "Y button pressed - Switched to %s", frame_name.c_str());
-            
+            publishFrame();
+
             // Trigger haptic feedback for mode change - CORRECTED
             auto mode_msg = std_msgs::msg::Bool();
             mode_msg.data = true;
@@ -500,6 +516,7 @@ private:
     // Haptic feedback publishers - CORRECTED
     rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr emergency_pub_;
     rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr mode_change_pub_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr frame_pub_;
 
     bool previous_b_button_ = false;
     bool previous_x_button_ = false;

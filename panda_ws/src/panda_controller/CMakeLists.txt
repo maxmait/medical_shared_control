@@ -103,6 +103,8 @@ install(PROGRAMS
   ${PROJECT_NAME}/test_controller_input.py
   ${PROJECT_NAME}/test_controller_vibration.py
   ${PROJECT_NAME}/haptic_feedback_node.py
+  ${PROJECT_NAME}/status_dashboard.py
+  ${PROJECT_NAME}/joy_manager.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
