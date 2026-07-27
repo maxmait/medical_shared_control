@@ -12,8 +12,14 @@ services:
       - .:/workspaces/medical_robot_shared_control
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${XAUTHORITY:-$HOME/.Xauthority}:/tmp/.Xauthority:rw
-    devices:
+      # Live bind-mount (NOT `devices:`) so a replugged controller's device
+      # nodes appear inside the container. `devices:` only snapshots /dev/input
+      # at container start, so hotplugged joysticks never show up.
       - /dev/input:/dev/input
+    device_cgroup_rules:
+      # Allow read/write to input devices (character major 13), including nodes
+      # that appear later via hotplug.
+      - 'c 13:* rmw'
     group_add:
       - input
     stdin_open: true

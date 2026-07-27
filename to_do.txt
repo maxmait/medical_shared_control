@@ -11,6 +11,27 @@ DONE
 - Safety watchdog, tunable safety parameters, damped IK + velocity clamps,
   and a gtest suite for the real-time safety core (see README Project Status).
 
+DONE (2026-07-27) — status dashboard + joystick reconnect
+- Status dashboard (panda_controller/status_dashboard.py): Tkinter window showing
+  joystick connection, coordinate frame (GLOBAL/LOCAL, from the latched
+  /teleop_frame topic), teleop mode, live buttons/sticks/triggers with per-stick
+  axis meaning, LiDAR distance, and the user-vs-safe velocity bars. Bottom has a
+  collapsible "ⓘ Controls" guide and a "⟳ Reconnect joystick" button. Confirmed
+  working on hardware. Optional polish left: add a screenshot/GIF to the README.
+- Joystick reconnect (panda_controller/joy_manager.py): supervises a single
+  joy_node, runs it directly (resolved path, stdbuf line-buffered output), and on
+  the /joystick/reconnect service restarts it with verify-and-retry — watches for
+  "Opened joystick" and retries up to max_open_retries if the device does not open
+  in open_timeout. Params in config/sim.yaml (joy_manager section). Confirmed
+  working.
+- Root cause of the earlier "reconnect never works after replug": docker-compose
+  mapped /dev/input via `devices:`, which only snapshots the nodes at container
+  start, so a replugged controller never appeared in the container (/dev/input
+  went empty). Fixed by bind-mounting /dev/input as a live volume plus a
+  device_cgroup_rules entry for char major 13. Requires `docker compose down &&
+  docker compose up` to take effect. Verified: /dev/input now updates live on
+  unplug/replug and reconnect works end-to-end.
+
 FUTURE
 - Eyeball curvature-following: move the robot perpendicular to the eye,
   reconstruct the corneal/scleral curvature (e.g. from the tool-tip LiDAR
