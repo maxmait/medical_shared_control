@@ -3,15 +3,15 @@
 
 The stock joy_node keeps the handle it opened at startup, so if the controller
 is unplugged and replugged it never re-establishes communication. This node owns
-a single joy_node child process and restarts it cleanly *on demand* (the
-/joystick/reconnect service, wired to the dashboard button): it stops the old
-driver, waits briefly so the device handle is released, then starts a fresh one
-that re-grabs whatever controller is currently connected.
+a single joy_node child process and restarts it cleanly on demand (the
+/joystick/reconnect service, wired to the dashboard button).
 
-It deliberately does NOT poll /joy and restart on silence — a fresh joy_node
-needs to run undisturbed to open the device, and an aggressive watchdog just
-races the device handle and never settles. joy_node's own output is forwarded so
-connection problems are visible on the console.
+A plain kill+respawn is not enough: under load (e.g. the full simulation) the
+fresh joy_node sometimes comes up before the device has settled and silently
+fails to open it. So each (re)start is *verified*: the manager watches joy_node's
+output for "Opened joystick" and, if it does not appear within open_timeout,
+restarts again — up to max_open_retries times. This is a bounded retry tied to an
+explicit start/reconnect, not a perpetual watchdog.
 
   Service:  /joystick/reconnect  (std_srvs/srv/Trigger)  -> restart the driver
 
@@ -41,19 +41,26 @@ class JoyManager(Node):
         self.deadzone = self.declare_parameter('deadzone', 0.05).value
         self.autorepeat_rate = self.declare_parameter('autorepeat_rate', 20.0).value
         # Delay between stopping the old driver and starting a new one, so the
-        # device file handle is released before the fresh joy_node opens it.
-        self.restart_delay = self.declare_parameter('restart_delay', 1.0).value
+        # device handle is released before the fresh joy_node opens it.
+        self.restart_delay = self.declare_parameter('restart_delay', 1.5).value
+        # If joy_node does not report "Opened joystick" within this many seconds,
+        # the start is considered failed and retried (up to max_open_retries).
+        self.open_timeout = self.declare_parameter('open_timeout', 3.0).value
+        self.max_open_retries = self.declare_parameter('max_open_retries', 4).value
 
         self._proc = None
         self._reader = None
-        self._exit_reported = False
+        self._joy_exe = None
+        self._opened = False
+        self._spawn_time = 0.0
+        self._retries_left = 0
+        self._failure_reported = False
 
         self.reconnect_srv = self.create_service(
             Trigger, '/joystick/reconnect', self._on_reconnect)
-        # Light timer only to report (once) if the driver dies; no auto-restart.
-        self.create_timer(2.0, self._watch)
+        self.create_timer(1.0, self._watch)
 
-        self._spawn('startup')
+        self._start_driver('startup', delay=False)
 
     # --- device discovery (diagnostics) ---------------------------------
     def _detect_devices(self):
@@ -77,7 +84,34 @@ class JoyManager(Node):
                 found.append((name, js))
         return found
 
-    # --- child process management ---------------------------------------
+    def _resolve_joy_exe(self):
+        """Locate joy_node so we can run it directly (skipping the 'ros2 run'
+        wrapper, which spawns it as a grandchild and hides its output/signals)."""
+        if self._joy_exe is not None:
+            return self._joy_exe
+        try:
+            prefix = subprocess.check_output(
+                ['ros2', 'pkg', 'prefix', self.joy_package], text=True).strip()
+            exe = os.path.join(prefix, 'lib', self.joy_package, self.joy_executable)
+            if os.path.exists(exe):
+                self._joy_exe = exe
+        except (subprocess.SubprocessError, OSError):
+            self._joy_exe = None
+        return self._joy_exe
+
+    # --- driver lifecycle -----------------------------------------------
+    def _start_driver(self, reason, delay=True):
+        """Start (or restart) the driver with a fresh retry budget."""
+        self._retries_left = int(self.max_open_retries)
+        self._failure_reported = False
+        self._respawn(reason, delay)
+
+    def _respawn(self, reason, delay=True):
+        self._kill()
+        if delay:
+            time.sleep(max(0.0, float(self.restart_delay)))
+        self._spawn(reason)
+
     def _spawn(self, reason):
         devices = self._detect_devices()
         if devices:
@@ -89,15 +123,18 @@ class JoyManager(Node):
                 'No joystick (js*) device found. Is the controller connected and '
                 'is /dev/input mapped into the container?')
 
-        # stdbuf keeps joy_node's stdout/stderr line-buffered so its "Opened
-        # joystick" / error messages appear promptly rather than only on exit.
-        cmd = [
-            'stdbuf', '-oL', '-eL',
-            'ros2', 'run', self.joy_package, self.joy_executable, '--ros-args',
+        node_args = [
+            '--ros-args',
             '-p', 'device_id:=%d' % int(self.device_id),
             '-p', 'deadzone:=%f' % float(self.deadzone),
             '-p', 'autorepeat_rate:=%f' % float(self.autorepeat_rate),
         ]
+        exe = self._resolve_joy_exe()
+        if exe is not None:
+            cmd = ['stdbuf', '-oL', '-eL', exe] + node_args
+        else:
+            cmd = ['stdbuf', '-oL', '-eL', 'ros2', 'run',
+                   self.joy_package, self.joy_executable] + node_args
         try:
             self._proc = subprocess.Popen(
                 cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -107,7 +144,8 @@ class JoyManager(Node):
             self.get_logger().error('Could not start joy driver: %s' % exc)
             return
 
-        self._exit_reported = False
+        self._opened = False
+        self._spawn_time = time.monotonic()
         self._reader = threading.Thread(
             target=self._drain, args=(self._proc,), daemon=True)
         self._reader.start()
@@ -117,8 +155,11 @@ class JoyManager(Node):
         try:
             for line in proc.stdout:
                 line = line.rstrip()
-                if line:
-                    self.get_logger().info('[joy_node] ' + line)
+                if not line:
+                    continue
+                if 'Opened joystick' in line:
+                    self._opened = True
+                self.get_logger().info('[joy_node] ' + line)
         except (ValueError, OSError):
             pass
 
@@ -141,25 +182,53 @@ class JoyManager(Node):
     # --- ROS callbacks ---------------------------------------------------
     def _on_reconnect(self, _request, response):
         self.get_logger().info('Reconnect requested — restarting joy driver')
-        self._kill()
-        # Let the old driver fully release the device before reopening it.
-        time.sleep(max(0.0, float(self.restart_delay)))
-        self._spawn('manual reconnect')
+        self._start_driver('manual reconnect')
+        # Report the current outcome; the verify/retry loop may still be running.
         response.success = self._proc is not None
-        response.message = ('Joy driver restarted' if response.success
+        response.message = ('Joy driver restarting…' if response.success
                             else 'Failed to start joy driver')
         return response
 
     def _watch(self):
-        # Report a dead driver once; do not auto-restart (that just races the
-        # device). The user can press Reconnect to bring it back.
+        """Verify the running driver actually opened a joystick; retry if not."""
         if self._proc is None:
             return
+        now = time.monotonic()
+
         code = self._proc.poll()
-        if code is not None and not self._exit_reported:
-            self._exit_reported = True
+        if code is not None:
+            # Process died before opening anything.
+            if self._retries_left > 0:
+                self._retries_left -= 1
+                self.get_logger().warn(
+                    'joy driver exited (code %s) — retrying (%d left)'
+                    % (code, self._retries_left))
+                self._respawn('retry after exit')
+            elif not self._failure_reported:
+                self._failure_reported = True
+                self.get_logger().error(
+                    'joy driver exited (code %s) and retries exhausted. '
+                    'Press Reconnect once the controller is back.' % code)
+            return
+
+        if self._opened:
+            return  # healthy
+
+        # Alive but no joystick opened yet.
+        if (now - self._spawn_time) <= self.open_timeout:
+            return  # still within the grace window
+        if self._retries_left > 0:
+            self._retries_left -= 1
+            self.get_logger().warn(
+                'joy_node did not open a joystick within %.0fs — retrying (%d left)'
+                % (self.open_timeout, self._retries_left))
+            self._respawn('retry (no joystick opened)')
+        elif not self._failure_reported:
+            self._failure_reported = True
             self.get_logger().error(
-                'joy driver exited (code %s). Press Reconnect to restart it.' % code)
+                'Could not open a joystick after %d attempts. Check the '
+                'controller is awake and js0 is present, then press Reconnect.'
+                % self.max_open_retries)
 
     def destroy_node(self):
         self._kill()

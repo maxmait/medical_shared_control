@@ -55,3 +55,14 @@ haptic_feedback:
     enable_collision_feedback: true
     enable_force_feedback: false
     enable_status_feedback: true
+
+joy_manager:
+  ros__parameters:
+    # Real hardware driver — keep on wall-clock time, not the Gazebo clock.
+    use_sim_time: false
+    device_id: 0
+    deadzone: 0.05
+    autorepeat_rate: 20.0
+    restart_delay: 2.5        # [s] gap between killing the old driver and starting a new one
+    open_timeout: 4.0         # [s] wait for "Opened joystick" before retrying a restart
+    max_open_retries: 6       # bounded retries per reconnect if the device doesn't open

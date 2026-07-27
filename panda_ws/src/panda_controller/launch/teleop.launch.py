@@ -120,6 +120,7 @@ def generate_launch_description():
         package='panda_controller',
         executable='joy_manager.py',
         name='joy_manager',
+        parameters=[params_file],
         output='screen'
     )
 
