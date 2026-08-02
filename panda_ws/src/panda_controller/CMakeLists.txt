@@ -37,6 +37,7 @@ find_package(tf2 REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(safety_controller REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 add_executable(panda_velocity_controller src/panda_velocity_controller.cpp)
 ament_target_dependencies(panda_velocity_controller
@@ -73,11 +74,25 @@ ament_target_dependencies(shared_control_bridge
   safety_controller
 )
 
+add_executable(eye_follow_controller src/eye_follow_controller.cpp)
+target_include_directories(eye_follow_controller PRIVATE include)
+ament_target_dependencies(eye_follow_controller
+  rclcpp
+  sensor_msgs
+  std_msgs
+  geometry_msgs
+  tf2
+  tf2_geometry_msgs
+  tf2_ros
+)
+target_link_libraries(eye_follow_controller Eigen3::Eigen)
+
 
 install(TARGETS
   panda_velocity_controller
   tele_controller_input
   shared_control_bridge
+  eye_follow_controller
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -120,6 +135,12 @@ if(BUILD_TESTING)
   set(ament_cmake_pep257_FOUND TRUE)
   set(ament_cmake_flake8_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
+
+  # Unit test for the pure sphere-fit used by eye_follow_controller.
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_sphere_fit test/test_sphere_fit.cpp)
+  target_include_directories(test_sphere_fit PRIVATE include)
+  target_link_libraries(test_sphere_fit Eigen3::Eigen)
 endif()
 
 ament_package()
