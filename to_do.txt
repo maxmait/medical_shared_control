@@ -32,10 +32,30 @@ DONE (2026-07-27) — status dashboard + joystick reconnect
   docker compose up` to take effect. Verified: /dev/input now updates live on
   unplug/replug and reconnect works end-to-end.
 
+IMPLEMENTED (2026-07-27, needs sim validation) — eyeball curvature-following
+- New node panda_controller/src/eye_follow_controller.cpp sits between teleop and
+  the safety bridge (teleop remapped to /panda_velocity_cmd_teleop; the node
+  publishes /panda_velocity_cmd_user, so all existing safety scaling/clamps/
+  watchdog still apply). LB button cycles DISABLED -> SCANNING -> FOLLOWING.
+    * SCANNING: passes teleop through while collecting tool-tip LiDAR surface
+      points (tip + range*ray in panda_link0); once enough points with enough
+      spread, least-squares fits the eye sphere (include/panda_controller/
+      sphere_fit.hpp, Coope's method, Eigen) and auto-engages FOLLOWING.
+    * FOLLOWING: holds the stand-off from the live LiDAR range, reorients the
+      probe perpendicular (beam aimed at the fitted sphere centre), and lets the
+      user drive tangential motion; output clamped, then re-clamped by the bridge.
+- Params in config/sim.yaml (eye_follow_controller). State shown on the dashboard
+  and on latched /eye_follow/state. Pure sphere fit unit-tested
+  (test/test_sphere_fit.cpp). Builds + all tests pass; node smoke-tested
+  (starts, state DISABLED, teleop pass-through OK).
+- TODO next (sim validation): launch bringup (procedure.sdf), drive the probe to
+  the LEFT eye (analytic sphere r=0.0115 at ~(0.20,0.52,0.73) in panda_link0),
+  press LB, sweep across the eye, confirm the logged fit matches that ground
+  truth, then confirm FOLLOWING holds /probe/scan ~= standoff and stays
+  perpendicular while driving laterally. Watch reachability (eye ~0.9 m from base,
+  near the Panda limit) — may need a tuned approach pose or to nudge the head
+  model closer via head_stabilizers in procedure.sdf.
+
 FUTURE
-- Eyeball curvature-following: move the robot perpendicular to the eye,
-  reconstruct the corneal/scleral curvature (e.g. from the tool-tip LiDAR
-  sweep or the camera), and follow that surface at a commanded stand-off
-  distance so the tool tracks the tissue contour automatically. This is the
-  main remaining research feature and is intentionally out of scope for the
-  current demo-ready milestone.
+- Camera-based reconstruction (alternative to the LiDAR sweep) and following the
+  full corneal/scleral profile rather than a single fitted sphere.

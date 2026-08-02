@@ -56,6 +56,26 @@ haptic_feedback:
     enable_force_feedback: false
     enable_status_feedback: true
 
+eye_follow_controller:
+  ros__parameters:
+    use_sim_time: true
+    base_frame: "panda_link0"
+    lidar_frame: "panda_lidar_frame"
+    lidar_axis: "x"
+    follow_button_index: 4      # LB — press to cycle DISABLED -> SCANNING -> FOLLOWING
+    standoff: 0.01              # [m] distance to hold from the eye surface
+    k_normal: 2.0               # stand-off regulation gain
+    k_orient: 2.0               # perpendicular-alignment gain
+    min_scan_points: 40         # points required before attempting a sphere fit
+    min_scan_spread: 0.012      # [m] bounding-box diagonal required (eye is ~23 mm)
+    radius_min: 0.005           # [m] accept fits only in this radius range
+    radius_max: 0.03
+    max_residual: 0.005         # [m] reject high-error fits, keep scanning
+    max_lin: 0.1                # [m/s] per-component clamp on the output
+    max_ang: 1.0                # [rad/s]
+    publish_rate: 50.0
+    input_timeout: 0.3          # [s] treat teleop/scan older than this as stale
+
 joy_manager:
   ros__parameters:
     # Real hardware driver — keep on wall-clock time, not the Gazebo clock.

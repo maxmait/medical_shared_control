@@ -64,6 +64,7 @@ GUIDE = [
     ('B', 'Safe joint pose'),
     ('X', 'Toggle position / velocity controller'),
     ('Y', 'Toggle frame (global / local)'),
+    ('LB', 'Eye-follow: scan then follow the eye surface'),
 ]
 
 
@@ -78,6 +79,7 @@ class DashboardNode(Node):
         self.user_speed = 0.0
         self.safe_speed = 0.0
         self.frame = 'GLOBAL'
+        self.eye_follow = 'DISABLED'
         self.reconnect_status = ''
 
         latched = QoSProfile(depth=1)
@@ -88,6 +90,7 @@ class DashboardNode(Node):
         self.create_subscription(Twist, '/panda_velocity_cmd_user', self._on_user_cmd, 10)
         self.create_subscription(Twist, '/panda_velocity_cmd', self._on_safe_cmd, 10)
         self.create_subscription(String, '/teleop_frame', self._on_frame, latched)
+        self.create_subscription(String, '/eye_follow/state', self._on_eye_follow, latched)
 
         self.reconnect_client = self.create_client(Trigger, '/joystick/reconnect')
 
@@ -108,6 +111,9 @@ class DashboardNode(Node):
 
     def _on_frame(self, msg):
         self.frame = msg.data
+
+    def _on_eye_follow(self, msg):
+        self.eye_follow = msg.data
 
     def joy_connected(self):
         return (time.monotonic() - self.joy_stamp) < STALE_TIMEOUT and self.latest_joy is not None
@@ -223,6 +229,8 @@ class Dashboard:
         conn_txt = '● CONNECTED' if connected else '○ DISCONNECTED'
         mode = 'ORIENT' if orient else 'TRANSLATE'
         text = 'Joystick: %s     Mode: %s     Frame: %s' % (conn_txt, mode, self.node.frame)
+        if self.node.eye_follow and self.node.eye_follow != 'DISABLED':
+            text += '     Eye-follow: %s' % self.node.eye_follow
         if emergency:
             text += '     EMERGENCY STOP'
         self.status.config(text=text, fg=RED if emergency else (GREEN if connected else RED))

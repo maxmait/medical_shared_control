@@ -134,9 +134,24 @@ def generate_launch_description():
             {'linear_scale': LaunchConfiguration('linear_scale')},
             {'angular_scale': LaunchConfiguration('angular_scale')}
         ],
+        # Feed the eye-follow controller, which augments and forwards to
+        # /panda_velocity_cmd_user (the safety bridge input).
         remappings=[
-            ('/panda_velocity_cmd', '/panda_velocity_cmd_user')
+            ('/panda_velocity_cmd', '/panda_velocity_cmd_teleop')
         ],
+        condition=UnlessCondition(LaunchConfiguration('disable_safety')),
+        output='screen'
+    )
+
+    # Eyeball curvature-following controller: sits between teleop and the safety
+    # bridge. Passes teleop through until engaged (LB button), then reconstructs
+    # the eye sphere from the tool-tip LiDAR and holds a perpendicular stand-off
+    # while the user drives laterally. Only in the safety path.
+    eye_follow_controller = Node(
+        package='panda_controller',
+        executable='eye_follow_controller',
+        name='eye_follow_controller',
+        parameters=[params_file],
         condition=UnlessCondition(LaunchConfiguration('disable_safety')),
         output='screen'
     )
@@ -195,6 +210,7 @@ def generate_launch_description():
         joy_manager,
         tele_controller_safety,
         tele_controller_direct,
+        eye_follow_controller,
         shared_control_bridge,
         haptic_feedback
     ])

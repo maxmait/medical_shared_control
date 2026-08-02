@@ -101,6 +101,26 @@ after the `/joy` stream goes silent, or on demand via the **Reconnect joystick**
 button (the `/joystick/reconnect` service). This fixes the stock `joy_node`
 holding a dead handle after the controller is unplugged and plugged back in.
 
+### Eyeball curvature-following
+
+An `eye_follow_controller` node adds an automatic surface-following mode for the
+eye. It sits between teleop and the safety bridge (so every command still passes
+through the safety scaling, clamps and watchdog), and is engaged with the **LB**
+button, which cycles `DISABLED → SCANNING → FOLLOWING`:
+
+- **SCANNING** — sweep the probe across the eye; the node collects tool-tip LiDAR
+  surface points and least-squares fits the eye as a sphere (Coope's method,
+  `include/panda_controller/sphere_fit.hpp`, unit-tested).
+- **FOLLOWING** — the controller holds a fixed **stand-off** from the live LiDAR
+  range and reorients the probe **perpendicular** to the surface (beam aimed at
+  the fitted sphere centre), while you still drive the lateral (tangential)
+  motion with the sticks.
+
+The current mode is shown on the status dashboard and on the latched
+`/eye_follow/state` topic. Tunable via `config/sim.yaml` (`eye_follow_controller`:
+`standoff`, `k_normal`, `k_orient`, scan thresholds, …). Use the `procedure.sdf`
+world (the bringup default), which contains the eye.
+
 The individual launch files (`gazebo.launch.py`, `enable_velocity_control.launch.py`,
 `rviz_camera.launch.py`, `teleop.launch.py`) still work standalone — see
 [docs/commands.md](docs/commands.md).
@@ -184,4 +204,4 @@ colcon test --packages-select safety_controller && colcon test-result --verbose
 - Distance-based safety constraints with dead-man watchdog (done)
 - Controller reconnect with bounded retry (done)
 - Unit tests + CI for the safety core (done)
-- Eyeball curvature-following (future work — see `to_do.txt`)
+- ✅ Eyeball curvature-following (LiDAR sphere reconstruction + perpendicular stand-off follow)
