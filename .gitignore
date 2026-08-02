@@ -3,6 +3,7 @@
 *.swo
 *~
 .DS_Store
+.claude/
 
 # ===== C++ / CMake =====
 /build/
